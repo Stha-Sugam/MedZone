@@ -22,6 +22,11 @@
 </head>
 </head>
 <body>
+	<div class = "database-error" id = "database-error">
+		<h1 class = "base-error"><c:if test = "${not empty errorMessage}">
+			Server Under Maintenance. Please try later!
+		</c:if></h1>
+	</div>
 	<main>
 		<div class = "Register">
 			<div class = "logo-section">
@@ -29,18 +34,7 @@
 			</div>
 			<div class = "content-section">
 				<div class = "register-text">
-					<c:set var = "errorMessage" value = "${requestScope.error}"/>
-					<h1>SIGN UP FOR <span>MEDZONE</span></h1>
-					<p class = "field-error" style = "text-align: center; height:20px; font-weight: bold; font-size: 0.9rem; padding-left: 0;">
-						<c:choose>
-							<c:when test = "${not empty errorMessage}">
-								${errorMessage}
-							</c:when>
-							<c:otherwise>
-								&nbsp;
-							</c:otherwise>
-						</c:choose>
-					</p>
+					<h1>SIGN UP FOR </h1><h1><span>MEDZONE</span></h1>
 				</div>
 				<form class = "form" id = "register" action = "Register" method = "post">
 					<div class = "double-section">
@@ -185,5 +179,18 @@
 			</div>
 		</div>
 	</main>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+	        const dbError = document.getElementById("database-error");
+	
+	        if (dbError && dbError.innerText.trim().length > 0) {
+	          dbError.classList.add("active");
+	
+	          setTimeout(() => {
+	            dbError.classList.remove("active");
+	          }, 5000);
+	        }
+	      });
+	</script>
 </body>
 </html>

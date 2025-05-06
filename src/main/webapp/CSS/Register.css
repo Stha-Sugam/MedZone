@@ -23,6 +23,34 @@ body{
 	justify-content: center;
 }
 
+.database-error {
+    position: fixed;
+    top: 5px;
+    right: -400px;
+    width: 350px;
+    height: 20px;
+    background-color: var(--light);
+    color: var(--secondary);
+    padding: 10px;
+    border-radius: 30px;
+    border: 3px solid var(--secondary);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease-in-out;
+    z-index: 10;
+    
+}
+
+.database-error .base-error{
+	height: 20px;
+	font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.database-error.active {
+    right: 10px;
+}
+
 main{
 	width: 80%;
 	margin: auto;
@@ -50,7 +78,7 @@ main{
 .content-section{
 	display: flex;
 	flex-direction: column;
-	width: 60%;
+	width: 70%;
 	height: auto;
 	margin: auto;
 	border: 3px solid var(--light);
@@ -62,6 +90,7 @@ main{
 .register-text{
 	border-bottom: 1px solid var(--primary);
 	width: 100%;
+	margin-bottom: 5px;
 }
 
 .register-text h1{
@@ -71,7 +100,7 @@ main{
 	font-weight: bold;
 }
 
-h1 span{
+h1 > span{
 	color: var(--primary);	
 	font-weight: bold;
 }
@@ -106,10 +135,11 @@ h1 span{
 	flex-direction: column;
 }
 
-.form label{
+.inner-section > label{
 	color: var(--dark);
 	font-size: 1rem;
 	padding-left: 10px;
+	text-align: left;
 }
 
 .form input {
@@ -119,6 +149,7 @@ h1 span{
     outline: none;
     background: transparent;
     color: inherit;
+    font-size: 1rem;
 }
 
 .form input[type = "email"]{
@@ -129,7 +160,6 @@ h1 span{
 .form .error-input {
     padding: 10px 15px;
     border-radius: 30px;
-    outline: none;
     background-color: var(--light);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 0.9rem;
@@ -186,7 +216,7 @@ h1 span{
 	box-sizing: border-box;
 	display: block;
 	text-align: center;
-	width: 44%;
+	width: 45%;
 	border-radius: 30px;
 	font-size: 1rem;
 	padding: 10px;
@@ -196,8 +226,6 @@ h1 span{
 	transition: 0.3s ease;
 	border: none;
 }
-
-
 
 a.cancel{
 	color: var(--secondary);
@@ -250,8 +278,6 @@ button.submit:hover{
 	img{
 		display: none;
 	}
-	
-	
 	
 	.actions button,submit, .actions > a.cancel{ 
 		width: 100%;

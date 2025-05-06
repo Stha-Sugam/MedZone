@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div>
 	<footer>
 		<div id = "footer">
@@ -9,10 +10,14 @@
 			</div>
 			<div class = "middle-side">
 				<a href = "${pageContext.request.contextPath}/Home">Home</a>
-				<a href = "${pageContext.request.contextPath}/Home">Dashboard</a>
-				<a href = "${pageContext.request.contextPath}/Home">Database</a>
-				<a href = "${pageContext.request.contextPath}/About">About</a>
-				<a href = "${pageContext.request.contextPath}/Home">Contact</a>
+				<c:if test = "${role == 'admin'}">
+					<a href = "${pageContext.request.contextPath}/Admin">Dashboard</a>
+				</c:if>
+				<c:if test = "${role == 'customer'}">
+					<a href = "${pageContext.request.contextPath}/Browse">Database</a>
+					<a href = "${pageContext.request.contextPath}/About">About</a>
+					<a href = "${pageContext.request.contextPath}/Contact">Contact</a>
+				</c:if>
 			</div>
 			<div class = "bottom-side">
 				<h4>&copy; 2025 MEDZONE. All rights reserved.</h4>

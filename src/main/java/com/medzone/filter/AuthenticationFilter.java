@@ -33,6 +33,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 	private static final String CONTACT = "/Contact";
 	private static final String BROWSE = "/Browse";
 	private static final String PROFILE = "/Profile";
+	private static final String LOGOUT = "/Logout";
 
     /**
      * @see HttpFilter#HttpFilter()
@@ -66,17 +67,14 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 		}
 		
 		boolean isLoggedIn = SessionUtil.getAttribute(req, "username") != null;
-		System.out.println("Username: " + SessionUtil.getAttribute(req, "username"));
-		System.out.println("user logged in: " + isLoggedIn);
 		String userRole = CookieUtil.getCookie(req, "role") != null ? CookieUtil.getCookie(req, "role").getValue(): null;
-		System.out.println("Cookie: " + CookieUtil.getCookie(req, "role"));
-		System.out.println("Role of user: " + userRole);
+		request.setAttribute("role", userRole);
 		
 		if ("admin".equals(userRole)) {
 			// Admin is logged in
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
-			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(HOME) || uri.endsWith(ROOT)) {
+			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(LOGOUT)){
 				chain.doFilter(request, response);
 			} else if (uri.endsWith(PROFILE) || uri.endsWith(BROWSE) || uri.endsWith(CONTACT) || uri.endsWith(ABOUT)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
@@ -88,7 +86,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER)) {
 				res.sendRedirect(req.getContextPath() + HOME);
 			} else if (uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(ABOUT) || uri.endsWith(PROFILE)
-					|| uri.endsWith(CONTACT) || uri.endsWith(BROWSE)) {
+					|| uri.endsWith(CONTACT) || uri.endsWith(BROWSE) || uri.endsWith(LOGOUT)){
 				chain.doFilter(request, response);
 			} else if (uri.endsWith(DASHBOARD)) {
 				res.sendRedirect(req.getContextPath() + HOME);

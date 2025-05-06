@@ -82,6 +82,7 @@ public class RegisterController extends HttpServlet {
 			
 			// Adding the user to the database
 			if (registerService.addUser(user)) {
+				req.getSession().setAttribute("successRegister", true);
 				resp.sendRedirect("Login");
 			}
 			else {
@@ -91,7 +92,7 @@ public class RegisterController extends HttpServlet {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			handleError(req, resp, "Internal server error occured.");
+			handleError(req, resp, "Cannot Connect to Server. Please try again!");
 		}
 	}
 	
@@ -302,7 +303,7 @@ public class RegisterController extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void handleError(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException{
-		req.setAttribute("error", message);
+		req.setAttribute("errorMessage", message);
 		req.getRequestDispatcher("WEB-INF/pages/Register.jsp").forward(req, resp);
 	}
 	

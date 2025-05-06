@@ -1,1 +1,159 @@
 @charset "UTF-8";
+
+*{
+	padding: 0px;
+	margin: 0px;
+	font-family: "Poppins", sans-serif;
+  	font-weight: 500;
+  	font-style: normal;
+  	color: var(--dark);
+}
+
+:root{
+	--primary: #3da9fc;			/*Blue*/
+	--secondary: #e45858; 		/*Red*/
+	--light: #fffffe; 			/*White*/
+	--secondarylight: #eff0f3;	/*White*/
+	--dark: #1b2d45;       		/*DarkBlue*/
+}
+
+body{
+	background-color: var(--light);
+}
+
+main{
+	width: 100%;
+	padding-top: 80px !important;
+}
+
+.profile-container{
+	display: flex;
+	height: 100%;
+}
+
+.left-container{
+	width: 15%;
+	padding: 30px 0 30px 30px;
+}
+
+.left-container h3{
+	background-color: var(--primary);
+	color: var(--light);
+	padding: 10px;
+	width: 100%;
+	border-radius: 30px 0 0 30px;
+	text-align: center;
+}
+
+.right-container{
+	width: 85%;
+	padding: 30px;
+	border-left: 3px solid var(--primary);
+}
+
+.right-container h2{
+	color: var(--primary);
+}
+
+
+.form{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: auto;
+}
+
+.form .double-section{
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	margin: auto;
+}
+
+.double-section .inner-section{
+	display: flex;
+	flex-direction: column;
+	width: 45%;
+}
+
+.single-section{
+	width: 95%;
+	margin: auto;
+}
+
+.single-section .inner-section{
+	display: flex;
+	flex-direction: column;
+}
+
+.inner-section > label{
+	color: var(--dark);
+	font-size: 1rem;
+	padding-left: 10px;
+	text-align: left;
+}
+
+.form input {
+    width: 90%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+}
+
+.form input[type = "email"]{
+	width: 92%;
+}
+
+.form .normal-input,
+.form .error-input {
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: var(--light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-size: 0.9rem;
+    color: inherit;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color:var(--dark);
+}
+
+.form .normal-input {
+    border: 2px solid var(--light);
+}
+
+.form .error-input {
+    border: 2px solid var(--secondary);
+}
+
+.form .normal-input:focus-within,
+.form .error-input:focus-within {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.form input::placeholder {
+    font-size: 0.9rem;
+    transition: 0.3s ease;
+}
+
+.form input:focus::placeholder {
+    color: transparent;
+}
+
+.field-error{
+	color: var(--secondary);
+	font-size: 0.8rem;
+	min-height: 12px;
+	height: 12px;
+	padding-left: 10px;
+	padding-bottom: 2px;
+}
+
+
+
+

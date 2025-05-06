@@ -40,7 +40,8 @@ footer{
 .middle-side{
 	padding: 10px;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
+	gap: 20px;
 	width: 30vw;
 	margin: auto;
 }

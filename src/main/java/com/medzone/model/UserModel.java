@@ -47,6 +47,12 @@ public class UserModel {
 		this.password = password;
 	}
 	
+	public UserModel(String firstName, String lastName, boolean is_admin) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 	public int getId() {
 		return id;
 	}

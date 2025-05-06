@@ -23,6 +23,47 @@ body{
 	justify-content: center;
 }
 
+
+.database-error, .success-register {
+    position: fixed;
+    top: 5px;
+    right: -400px;
+    width: 350px;
+    height: 20px;
+    background-color: var(--light);
+    color: var(--secondary);
+    padding: 10px;
+    border-radius: 5px;
+    border: 3px solid var(--secondary);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease-in-out;
+    z-index: 10;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.database-error {
+	color: var(--secondary);
+	border: 3px solid var(--secondary);
+}
+
+.success-register {
+	color: var(--primary);
+	border: 3px solid var(--primary);
+}
+
+.database-error .base-error, .success-register .success-msg{
+	height: 20px;
+	font-weight: bold;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.database-error.active, .success-register.active{
+    right: 10px;
+}
+
 main{
 	width: 70%;
 	height: 100vh;
@@ -44,10 +85,11 @@ main{
 }
 
 .right-side{
-	width: 60%;
+	width: 55%;
+	height: auto;
 	border: 3px solid var(--secondarylight);
 	border-radius: 20px;
-	box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
 }
 
 .upper{
@@ -72,6 +114,7 @@ main{
 	margin: 0 auto;
 	text-align: center;
 	font-size: 1.2rem;
+	padding-bottom: 20px;
 }
 
 .lower span{
@@ -99,10 +142,10 @@ span{
 
 .form{
 	display: flex;
-	width: 75%;
+	width: 80%;
 	margin: 0 auto;
-	padding: 40px;
-	height: 375px;
+	padding: 30px;
+	height: 100%;
 	flex-direction: column;
 	align-items: center;
 }
@@ -112,54 +155,65 @@ label{
 	font-size: 1rem;
 	width: 80%;
 	margin: 0 auto;
-	padding-top: 15px;
-	padding-bottom: 2px;
 	padding-left: 10px;
+	padding-bottom: 4px;
 }
 
-.input{
-	height: 50px;
-	padding: 0 15px;
+input{
+	width: 90%;
+	height: 100%;
+	outline: none;
+	border:  none;
+	background: transparent;
+    color: inherit;
+    font-size: 1rem;
+}
+
+.normal-input, 
+.error-input{
+	padding: 10px;
 	border-radius: 30px;
-	border: 3px solid var(--secondarylight);
 	background-color: var(--light);
 	color: var(--dark);
-	box-shadow: 0 1px 6px rgba(0 ,0 ,0 ,0.4);
-	width: 85%;
-	margin: 0 auto;
-	transition: 0.3s ease;
+	box-shadow: 0 0 5px rgba(0 ,0 ,0 ,0.3);
+	width:85%;
+	transition: 0.4s ease;
 	box-sizing: border-box;
 	display: flex;
-	flex-direction: row;
 	justify-content: space-around;
 	align-items: center;
 }
 
-.input:focus-within {
-	border: 3px solid var(--primary);
+.normal-input {
+	border: 2px solid var(--light);
+}
+
+.error-input {
+	border: 2px solid var(--secondary);
+}
+
+.normal-input:focus-within,
+.error-input:focus-within {
+	border: 2px solid var(--primary);
 	color: var(--primary);
 	font-size: 1rem;
 }
 
-.input input:focus{
-	color: var(--primary);
-}
-
-.input input:focus::placeholder{
+input:focus::placeholder{
 	color: transparent;
 }
 
-.input input::placeholder{
+input::placeholder{
 	font-size: 0.9rem;
 }
 
-.input input{
-	width: 90%;
-	height: 100%;
-	border:none;
-	outline: none;
-	font-size: 0.9rem;
-	color: inherit;
+.field-error{
+	color: var(--secondary);
+	font-size: 0.8rem;
+	min-height: 12px;
+	height: 12px;
+	padding-left: 10px;
+	padding-bottom: 2px;
 }
 
 .actions{

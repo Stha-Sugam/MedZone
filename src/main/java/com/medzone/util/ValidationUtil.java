@@ -2,7 +2,7 @@ package com.medzone.util;
 
 public class ValidationUtil {
 	
-	private static final String NAME_REGEX = "^[a-zA-Z]+$";
+	private static final String NAME_REGEX = "^[a-zA-Z]+[ a-zA-Z]*$";
 	private static final String USERNAME_REGEX = "^[a-zA-Z][a-zA-Z\\d_.]*$";
 	private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*[\\d])[A-Za-z\\d!@#$%^&*()]{8,}$";
 	private static final String PHONE_REGEX = "^(98|97)\\d{8}$";

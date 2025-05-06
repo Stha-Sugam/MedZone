@@ -41,59 +41,112 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
-		
-		if(ValidationUtil.isNullOrEmpty(username) || ValidationUtil.isNullOrEmpty(password)) {
-			handleLoginError(req, resp, "Fill all the fields");
-			return;
-		}
-		UserModel user = new UserModel(username, password);
-		System.out.print("user is Admin: " + user.isAdmin() + "\n");
-		Boolean loginStatus = loginService.loginUser(user);
-		
-		if (loginStatus != null && loginStatus) {
-			SessionUtil.setAttribute(req, "username", username);
-			if (user.isAdmin()) {
-				System.out.println("inside admin");
-				CookieUtil.addCookie(resp, "role", "admin", 5 * 50);
-				resp.sendRedirect(req.getContextPath() + "/Admin");
-			} else {
-				CookieUtil.addCookie(resp, "role", "customer", 5 * 50);
-				resp.sendRedirect(req.getContextPath() + "/Home");
+		try {
+			String userNameError = validateUserName(req);
+			String passwordError = validatePassword(req);
+			
+			if (userNameError != null || passwordError != null) {
+				handleInputError(req, resp, userNameError, passwordError);
+				return;
 			}
-			return;
-		} else {
-			handleLoginFailure(req, resp, loginStatus);
+			
+			String registeredUsername = validateRegisteredUsername(req);
+			
+			if (registeredUsername != null) {
+				handleRegisteredError(req, resp, registeredUsername);
+				return;
+			}
+			
+			String username = req.getParameter("username");
+			String password = req.getParameter("password");
+			
+			UserModel user = new UserModel(username, password);
+			
+			Boolean loginStatus = loginService.loginUser(user);
+			
+			if (loginStatus != null && loginStatus) {
+				SessionUtil.setAttribute(req, "username", username);
+				SessionUtil.setAttribute(req, "user", user);
+				if (user.isAdmin()) {
+					CookieUtil.addCookie(resp, "role", "admin", 5 * 40);
+					resp.sendRedirect(req.getContextPath() + "/Admin");
+				} else {
+					CookieUtil.addCookie(resp, "role", "customer", 5 * 150);
+					resp.sendRedirect(req.getContextPath() + "/Home");
+				}
+				return;
+			} else if (loginStatus != null && !loginStatus) {
+				req.setAttribute("password", "Password mismatch. Please try again.");
+				req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
+				return;
+			} else {
+				req.setAttribute("errorMessage", "Failed to Login. Please try again later!");
+				req.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(req, resp);
+			}
 		}
+		catch(Exception e) {
+			e.printStackTrace();
+			req.setAttribute("errorMessage", "Not empty");
+			req.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(req, resp);
+		}
+		
 	}
 	
 	/**
-	 * Handles login failures by setting attributes and forwarding to the login
-	 * page.
-	 *
-	 * @param req         HttpServletRequest object
-	 * @param resp        HttpServletResponse object
-	 * @param loginStatus Boolean indicating the login status
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
+	 * 
+	 * @param req
+	 * @return
 	 */
-	private void handleLoginFailure(HttpServletRequest req, HttpServletResponse resp, Boolean loginStatus)
-			throws ServletException, IOException {
-		String errorMessage;
-		if (loginStatus == null) {
-			errorMessage = "Our server is under maintenance. Please try again later!";
-		} else {
-			errorMessage = "User credential mismatch. Please try again!";
+	private String validateUserName(HttpServletRequest req) {
+		String userName = req.getParameter("username");
+		
+		// Validation for userName
+		if(ValidationUtil.isNullOrEmpty(userName)) {
+			return "Username is Required.";
 		}
-		req.setAttribute("errorMessage", errorMessage);
-		req.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(req, resp);
+		return null;
 	}
 	
-	private void handleLoginError(HttpServletRequest req, HttpServletResponse resp, String message)
-			throws ServletException, IOException {
-		req.setAttribute("errorMessage", message);
-		req.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(req, resp);
+	/**
+	 * 
+	 * @param req
+	 * @return
+	 */
+	private String validatePassword(HttpServletRequest req) {
+		String password = req.getParameter("password");
+		
+		// Validation for password
+		if(ValidationUtil.isNullOrEmpty(password)) {
+			return "Password is Required.";
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param req
+	 * @return
+	 */
+	private String validateRegisteredUsername(HttpServletRequest req) {
+		String username = req.getParameter("username");
+		LoginService loginService = new LoginService();
+		
+		if (!loginService.checkUsername(username)) {
+			return "Username does not exists";
+		}
+		return null;
+	}
+	
+	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String userNameError, String passwordError) throws ServletException, IOException {
+		req.setAttribute("userName", userNameError);
+		req.setAttribute("password", passwordError);
+		req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
+	}
+	
+	private void handleRegisteredError(HttpServletRequest req, HttpServletResponse resp, String usernameError) 
+			throws ServletException, IOException{
+		req.setAttribute("userName", usernameError);
+		req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
 	}
 
 }
