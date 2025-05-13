@@ -53,6 +53,26 @@ public class UserModel {
 		this.lastName = lastName;
 	}
 	
+	public UserModel(String firstName, String lastName, String userName, String phone, String email,
+			LocalDate registrationDate) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userName = userName;
+		this.phone = phone;
+		this.email = email;
+		this.registrationDate = registrationDate;
+	}
+	
+	public UserModel(String username, String firstName, String lastName, String phone, String email) {
+		super();
+		this.userName = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phone = phone;
+		this.email = email;
+	}
+	
 	public int getId() {
 		return id;
 	}

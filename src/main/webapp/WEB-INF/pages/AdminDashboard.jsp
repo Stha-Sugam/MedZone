@@ -21,8 +21,35 @@
 <body>
 	<jsp:include page = "Header.jsp"/>
 	<main>
-		<div class = "addition">
-			<a href = "#">Add Medicine</a>
+		<div class = "stat-container">
+			<div class = "stat-section">
+				<div class = "statistic">
+					<p>Total Users</p>
+					<h4>USERS COUNT: ${userCount}</h4>
+					<a href = "${pageContext.request.contextPath}/ManageUser">Manage Users</a>
+				</div>
+				<div class = "statistic">
+					<p>Total Medicine</p>
+					<h4>MEDICINES COUNT: ${medCount}</h4>
+					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageMed">Manage Medicines</a>
+				</div>
+				<div class = "statistic">
+					<p>Pending Tickets</p>
+					
+					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageTickets">Manage Tickets</a>
+				</div>
+			</div>
+			<div class = "stat-section">
+				<div class = "statistic">
+					<p>Recently Registered Users</p>
+				</div>
+				<div class = "statistic">
+					<p>Recently Registered Medicines</p>
+				</div>
+				<div class = "statistic">
+					<p>Recently created Tickets</p>
+				</div>
+			</div>
 		</div>
 	</main>
 	<jsp:include page = "Footer.jsp"/>

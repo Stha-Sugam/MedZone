@@ -23,8 +23,8 @@
 			        <h4>${username}</h4>
 			    </div>
 			</div>
-		    <a href = "${pageContext.request.contextPath}/Profile" class = "to-account">
-				<i class = "fa fa-pencil"></i>
+		    <a href = "${pageContext.request.contextPath}/ProfileInfo" class = "to-account">
+				<i class = "fa fa-user fa-user-edit"></i>
 			</a>
 		</div>
 	</div>
@@ -44,14 +44,16 @@
 			<div class="menu-container" id="menu-container">
 				<ul class="items-container">
 					<li class = "items home"><a href="${pageContext.request.contextPath}/Home">Home</a></li>
-					<c:if test = "${role == 'admin'}">
-						<li class = "items dashboard"><a href="${pageContext.request.contextPath}/Admin">Dashboard</a></li>
-					</c:if>
-					<c:if test = "${role == 'customer'}">
-						<li class = "items database"><a href="${pageContext.request.contextPath}/Browse">Browse</a></li>
-						<li class = "items about"><a href="${pageContext.request.contextPath}/About">About</a></li>
-						<li class = "items contact"><a href="${pageContext.request.contextPath}/Contact">Contact</a></li>
-					</c:if>
+					<c:choose>
+						<c:when test = "${role == 'admin'}">
+							<li class = "items dashboard"><a href="${pageContext.request.contextPath}/Admin">Dashboard</a></li>
+						</c:when>
+						<c:otherwise>
+							<li class = "items database"><a href="${pageContext.request.contextPath}/Browse">Browse</a></li>
+							<li class = "items about"><a href="${pageContext.request.contextPath}/About">About</a></li>
+							<li class = "items contact"><a href="${pageContext.request.contextPath}/Contact">Contact</a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 				<div class = "profile" id = "profile-icon">
 					<c:if test = "${role == 'customer'}">

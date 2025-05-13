@@ -1,26 +1,46 @@
 package com.medzone.model;
 
+import java.time.LocalDate;
+
 public class MedicineModel {
+	private String id;
 	private String name;
 	private String brand;
-	private String manufacturer;
-	private String type;
-	private String dosage;
-	private String med_usage;
-	private UserModel admin_id;
+	private String form;
+	private String strength;
+	private String usage;
+	private LocalDate addedDate;
 	
+	// empty constructor
 	public MedicineModel() {}
+	
+	public MedicineModel(String id, String name, String brand, String form, String strength, String usage, LocalDate addedDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.brand = brand;
+		this.form = form;
+		this.strength = strength;
+		this.usage = usage;
+		this.addedDate = addedDate;
+	}
 
-	public MedicineModel(String name, String brand, String manufacturer, String type, String dosage, String med_usage,
-			UserModel admin_id) {
+	public MedicineModel(String name, String brand, String form, String strength, String usage, LocalDate addedDate) {
 		super();
 		this.name = name;
 		this.brand = brand;
-		this.manufacturer = manufacturer;
-		this.type = type;
-		this.dosage = dosage;
-		this.med_usage = med_usage;
-		this.admin_id = admin_id;
+		this.form = form;
+		this.strength = strength;
+		this.usage = usage;
+		this.addedDate = addedDate;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -39,45 +59,39 @@ public class MedicineModel {
 		this.brand = brand;
 	}
 
-	public String getManufacturer() {
-		return manufacturer;
+	public String getForm() {
+		return form;
 	}
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
+	public void setForm(String form) {
+		this.form = form;
 	}
 
-	public String getType() {
-		return type;
+	public String getStrength() {
+		return strength;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setStrength(String strength) {
+		this.strength = strength;
 	}
 
-	public String getDosage() {
-		return dosage;
+	public String getUsage() {
+		return usage;
 	}
 
-	public void setDosage(String dosage) {
-		this.dosage = dosage;
+	public void setUsage(String usage) {
+		this.usage = usage;
 	}
 
-	public String getMed_usage() {
-		return med_usage;
+	public LocalDate getAddedDate() {
+		return addedDate;
 	}
 
-	public void setMed_usage(String med_usage) {
-		this.med_usage = med_usage;
-	}
-
-	public UserModel getAdmin_id() {
-		return admin_id;
-	}
-
-	public void setAdmin_id(UserModel admin_id) {
-		this.admin_id = admin_id;
+	public void setAddedDate(LocalDate addedDate) {
+		this.addedDate = addedDate;
 	}
 	
+	
+
 	
 }

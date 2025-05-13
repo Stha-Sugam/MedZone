@@ -34,7 +34,7 @@
 			</div>
 			<div class = "content-section">
 				<div class = "register-text">
-					<h1>SIGN UP FOR </h1><h1><span>MEDZONE</span></h1>
+					<h1>SIGN UP FOR <span>MEDZONE</span></h1>
 				</div>
 				<form class = "form" id = "register" action = "Register" method = "post">
 					<div class = "double-section">
@@ -66,7 +66,7 @@
 							<p class = "field-error">
 								<c:choose>
 									<c:when test = "${not empty lastNameError}">
-										${firstNameError}
+										${lastNameError}
 									</c:when>
 									<c:otherwise>
 										&nbsp;
@@ -161,7 +161,7 @@
 							</div>
 							<p class = "field-error">
 								<c:choose>
-									<c:when test = "${not empty email}">
+									<c:when test = "${not empty emailError}">
 										${emailError}
 									</c:when>
 									<c:otherwise>

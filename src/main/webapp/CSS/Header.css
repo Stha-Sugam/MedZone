@@ -96,6 +96,7 @@ a{
 	color: var(--dark);
 	box-shadow:0 0 3px rgba(0, 0, 0, 0.4);
 	font-size: 1rem;
+	font-weight: bold;
 }
 
 .items > a:hover {
@@ -103,7 +104,6 @@ a{
 	color: var(--primary);
 	border: 3px solid var(--primary);
 	box-shadow:0 0 6px rgba(0, 0, 0, 0.6);	
-	font-weight: bold;
 }
 
 .profile{
@@ -233,6 +233,7 @@ form{
 	transition: background-color 0.2s ease;
 	color: var(--secondary);
 	font-size: 1rem;
+	font-weight: bold;
 }
 
 .log > form > button:hover {
@@ -305,6 +306,7 @@ form{
 	color: var(--dark);
 	font-size: 1rem;
 	transition: transform 0.3s ease;
+	font-weight: bold;
 }
 
 .side-items.logout button{

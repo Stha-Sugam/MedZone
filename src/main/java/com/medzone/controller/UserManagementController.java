@@ -7,21 +7,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import com.medzone.service.DashboardService;
+import com.medzone.service.UserManagementService;
 import com.medzone.util.SessionUtil;
 
 /**
- * Servlet implementation class AdminDashboardController
+ * Servlet implementation class UserManagementController
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/Admin" })
-public class AdminDashboardController extends HttpServlet {
+@WebServlet(asyncSupported = true, urlPatterns = { "/ManageUser" })
+public class UserManagementController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final DashboardService dashboardService = new DashboardService();
+	private final UserManagementService manageUserService = new UserManagementService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminDashboardController() {
+    public UserManagementController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,9 +31,8 @@ public class AdminDashboardController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		SessionUtil.setAttribute(request, "userCount",dashboardService.GetUserCount());
-		SessionUtil.setAttribute(request, "medCount", dashboardService.GetMedicineCount());
-		request.getRequestDispatcher("WEB-INF/pages/AdminDashboard.jsp").forward(request, response);
+		SessionUtil.setAttribute(request, "usersDetails", manageUserService.GetUserDetails());
+		request.getRequestDispatcher("WEB-INF/pages/UserManagement.jsp").forward(request, response);
 	}
 
 	/**

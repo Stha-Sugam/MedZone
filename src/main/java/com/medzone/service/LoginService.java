@@ -1,15 +1,13 @@
 package com.medzone.service;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.medzone.config.DbConfig;
 import com.medzone.model.UserModel;
 import com.medzone.util.PasswordUtil;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Service class for handling login operations. Connects to the database,
@@ -46,7 +44,7 @@ public class LoginService {
 			return null;
 		}
 
-		String query = "SELECT username, password, is_admin, first_name, last_name FROM users WHERE username = ?";
+		String query = "SELECT username, password, is_admin FROM users WHERE username = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(query)) {
 			stmt.setString(1, user.getUserName());
 			ResultSet foundUser = stmt.executeQuery();

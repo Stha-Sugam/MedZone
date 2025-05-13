@@ -1,0 +1,230 @@
+@charset "UTF-8";
+
+:root {
+    --primary: #3da9fc;         /* Blue */
+    --secondary: #e45858;       /* Red */
+    --light: #fffffe;           /* White */
+    --secondarylight: #eff0f3;  /* Light Gray */
+    --dark: #1b2d45;            /* Dark Blue */
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: var(--dark);
+}
+
+body {
+    background-color: var(--light);
+}
+
+main {
+    width: 45%;
+    margin: auto;
+    padding-top: 80px;
+}
+
+.head{
+	color: var(--primary);
+	padding-left: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.username-head {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.field-error {
+    color: var(--secondary);
+    font-size: 0.8rem;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    min-height: 12px;
+    height: 12px;
+}
+
+.single-section {
+    width: 100%;
+    margin: auto;
+}
+
+.single-section .inner-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.inner-section > label {
+    color: var(--dark);
+    font-size: 1rem;
+    padding-left: 15px;
+    text-align: left;
+}
+
+.form input, .form textarea{
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: inherit;
+}
+
+.form .normal-input,
+.form .error-input {
+    padding: 10px 15px;
+    border-radius: 30px;
+    background-color: var(--light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: var(--dark);
+    transition: 0.3s ease;
+}
+
+.form .normal-input {
+    border: 2px solid var(--light);
+}
+
+.form .error-input {
+    border: 2px solid var(--secondary);
+}
+
+.form .normal-input:focus-within,
+.form .error-input:focus-within {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.form .normal-input:focus-within i,
+.form .error-input:focus-within i {
+    color: var(--primary);
+}
+
+.form input::placeholder, .form textarea::placeholder {
+    font-size: 0.9rem;
+    transition: 0.3s ease;
+}
+
+.form input:focus::placeholder, .form textarea:focus::placeholder {
+    color: transparent;
+}
+
+textarea{
+	max-width: 100%;
+	min-width: 100%;
+	max-height: 400px;
+	min-height: 150px;
+	box-sizing: border-box;
+	border-radius: 10px !important; 
+	padding: 5px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    padding-top: 10px;
+    outline: none;
+}
+
+.actions button,
+.actions a.cancel {
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    width: 48%;
+    border-radius: 30px;
+    font-size: 1rem;
+    padding: 11px;
+    font-weight: bold;
+    border: none;
+    background-color: var(--light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    transition: 0.3s ease;
+}
+
+a.cancel {
+    color: var(--secondary);
+}
+
+button.submit {
+    color: var(--primary);
+    outline: none;
+}
+
+a.cancel:hover {
+    color: var(--secondarylight);
+    background-color: var(--secondary);
+    cursor: pointer;
+}
+
+button.submit:hover {
+    color: var(--secondarylight);
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Message Boxes */
+
+.error-message,
+.success-messages,
+.error-messages {
+    position: fixed;
+    top: 53px;
+    right: -600px;
+    padding: 10px;
+    height: auto;
+    background-color: var(--light);
+    border-radius: 5px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease-in-out;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-messages {
+    border: 3px solid var(--secondary) !important;
+    height: 50px;
+}
+
+.error-message .err-message,
+.error-message .error-msg,
+.error-messages .error-msg,
+.success-messages .success-msg {
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.success-messages {
+    border: 3px solid var(--primary);
+}
+
+.success-messages .success-msg {
+    color: var(--primary);
+}
+
+.success-messages.active,
+.error-messages.active,
+.error-message.active {
+    right: 10px;
+}

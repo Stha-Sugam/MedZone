@@ -42,23 +42,24 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-			String userNameError = validateUserName(req);
-			String passwordError = validatePassword(req);
+			
+			String username = req.getParameter("username");
+			String password = req.getParameter("password");
+			
+			String userNameError = validateUserName(req, username);
+			String passwordError = validatePassword(req, password);
 			
 			if (userNameError != null || passwordError != null) {
 				handleInputError(req, resp, userNameError, passwordError);
 				return;
 			}
 			
-			String registeredUsername = validateRegisteredUsername(req);
+			String registeredUsername = validateRegisteredUsername(req, username);
 			
 			if (registeredUsername != null) {
 				handleRegisteredError(req, resp, registeredUsername);
 				return;
 			}
-			
-			String username = req.getParameter("username");
-			String password = req.getParameter("password");
 			
 			UserModel user = new UserModel(username, password);
 			
@@ -66,7 +67,6 @@ public class LoginController extends HttpServlet {
 			
 			if (loginStatus != null && loginStatus) {
 				SessionUtil.setAttribute(req, "username", username);
-				SessionUtil.setAttribute(req, "user", user);
 				if (user.isAdmin()) {
 					CookieUtil.addCookie(resp, "role", "admin", 5 * 40);
 					resp.sendRedirect(req.getContextPath() + "/Admin");
@@ -97,11 +97,10 @@ public class LoginController extends HttpServlet {
 	 * @param req
 	 * @return
 	 */
-	private String validateUserName(HttpServletRequest req) {
-		String userName = req.getParameter("username");
+	private String validateUserName(HttpServletRequest req, String username) {
 		
 		// Validation for userName
-		if(ValidationUtil.isNullOrEmpty(userName)) {
+		if(ValidationUtil.isNullOrEmpty(username)) {
 			return "Username is Required.";
 		}
 		return null;
@@ -112,8 +111,7 @@ public class LoginController extends HttpServlet {
 	 * @param req
 	 * @return
 	 */
-	private String validatePassword(HttpServletRequest req) {
-		String password = req.getParameter("password");
+	private String validatePassword(HttpServletRequest req, String password) {
 		
 		// Validation for password
 		if(ValidationUtil.isNullOrEmpty(password)) {
@@ -127,12 +125,11 @@ public class LoginController extends HttpServlet {
 	 * @param req
 	 * @return
 	 */
-	private String validateRegisteredUsername(HttpServletRequest req) {
-		String username = req.getParameter("username");
+	private String validateRegisteredUsername(HttpServletRequest req, String username) {
 		LoginService loginService = new LoginService();
 		
 		if (!loginService.checkUsername(username)) {
-			return "Username does not exists";
+			return "Username does not exist";
 		}
 		return null;
 	}

@@ -44,7 +44,6 @@ public class RegisterController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		try {
-			
 			String firstNameError = validateFirstName(req);
 			String lastNameError = validateLastName(req);
 			String userNameError = validateUserName(req);
@@ -324,6 +323,4 @@ public class RegisterController extends HttpServlet {
 		req.setAttribute("email", emailError);
 		req.getRequestDispatcher("WEB-INF/pages/Register.jsp").forward(req, resp);
 	}
-	
-
 }

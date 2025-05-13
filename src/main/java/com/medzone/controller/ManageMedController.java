@@ -7,17 +7,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.medzone.service.MedicineManagementService;
+import com.medzone.service.UserManagementService;
+import com.medzone.util.SessionUtil;
+
 /**
- * Servlet implementation class ProfileController
+ * Servlet implementation class ManageMedController
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/Profile" })
-public class ProfileController extends HttpServlet {
+@WebServlet("/ManageMed")
+public class ManageMedController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final MedicineManagementService manageMedicineService = new MedicineManagementService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProfileController() {
+    public ManageMedController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +32,8 @@ public class ProfileController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("WEB-INF/pages/Profile.jsp").forward(request, response);
+		SessionUtil.setAttribute(request, "medicineDetails", manageMedicineService.GetMedDetails());
+		request.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(request, response);
 	}
 
 	/**
