@@ -83,7 +83,7 @@ main{
 	margin: auto;
 	border: 3px solid var(--light);
 	box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
-	border-radius: 30px;
+	border-radius: 20px;
 	padding: 30px 60px;
 }
 
@@ -159,7 +159,7 @@ h1 > span{
 .form .normal-input,
 .form .error-input {
     padding: 10px 15px;
-    border-radius: 30px;
+    border-radius: 10px;
     background-color: var(--light);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 0.9rem;
@@ -217,7 +217,7 @@ h1 > span{
 	display: block;
 	text-align: center;
 	width: 45%;
-	border-radius: 30px;
+	border-radius: 10px;
 	font-size: 1rem;
 	padding: 10px;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);

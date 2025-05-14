@@ -40,13 +40,8 @@ public class MedicineManagementService {
 			ResultSet medicine = stmt.executeQuery();
 
 			while (medicine.next()) {
-				medicineList.add(new MedicineModel(
-						medicine.getString("med_id"),
-						medicine.getString("name"),
-						medicine.getString("brand"),
-						medicine.getString("dosage_form"),
-						medicine.getString("dosage_strength"),
-						medicine.getString("med_usage"),
+				medicineList.add(new MedicineModel(medicine.getString("med_id"), medicine.getString("name"), medicine.getString("brand"),
+						medicine.getString("dosage_form"), medicine.getString("dosage_strength"), medicine.getString("med_usage"),
 						medicine.getDate("added_date").toLocalDate()));
 			}
 
@@ -63,22 +58,15 @@ public class MedicineManagementService {
 			return null;
 		}
 
-		String extractIdQuery = "SELECT name, brand, dosage_form, dosage_strength, med_usage FROM medicines WHERE med_id = ?";
+		String extractIdQuery = "SELECT med_id, name, brand, dosage_form, dosage_strength, med_usage FROM medicines WHERE med_id = ?";
 		try (PreparedStatement extractStmt = dbConn.prepareStatement(extractIdQuery)) {
 			extractStmt.setString(1, id);
 
 			ResultSet foundMed = extractStmt.executeQuery();
 
 			if (foundMed.next()) {
-				MedicineModel med = new MedicineModel();
-				med.setId(id);
-				med.setName(foundMed.getString("name"));
-				med.setBrand(foundMed.getString("brand"));
-				med.setForm(foundMed.getString("dosage_form"));
-				med.setStrength(foundMed.getString("dosage_strength"));
-				med.setUsage(foundMed.getString("med_usage"));
-
-				return med;
+				return new MedicineModel(foundMed.getString("med_id"), foundMed.getString("name"), foundMed.getString("brand"),
+				foundMed.getString("dosage_form"), foundMed.getString("dosage_strength"), foundMed.getString("med_usage"));
 			}
 		} catch (SQLException e) {
 			System.err.println("Error during medicine extraction: " + e.getMessage());
@@ -136,6 +124,27 @@ public class MedicineManagementService {
 			return null;
 		}
 	}
+	
+	public Boolean deleteMedicine(String id) {
+		if (dbConn == null) {
+			System.err.println("Database connection is not available.");
+			return null;
+		}
+		
+		String deleteQuery = "DELETE FROM medicines WHERE med_id = ?";
+		try(PreparedStatement deleteStmt = dbConn.prepareStatement(deleteQuery)) {
+			deleteStmt.setString(1, id);
+			
+			int rowsDeleted = deleteStmt.executeUpdate();
+			
+			return rowsDeleted > 0;
+			
+		} catch (SQLException e) {
+			System.err.println("Error during medicine update: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public Boolean CheckRegisteredId(String id) {
 		String checkQuery = "SELECT med_id FROM medicines WHERE med_id = ?";
@@ -147,4 +156,6 @@ public class MedicineManagementService {
 			return null;
 		}
 	}
+	
+	
 }

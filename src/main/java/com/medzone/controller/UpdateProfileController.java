@@ -20,7 +20,7 @@ public class UpdateProfileController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	// Creating an object of RegisterService
 	private final ProfileService profileService = new ProfileService();
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -40,7 +40,7 @@ public class UpdateProfileController extends HttpServlet {
 		else {
 			String username = (String) SessionUtil.getAttribute(request, "username");
 			UserModel userInfo = profileService.getUserInfo(new UserModel(username));
-			
+
 			SessionUtil.setAttribute(request, "user", userInfo);
 		}
 		request.setAttribute("activeSection", "edit-profile");
@@ -54,67 +54,67 @@ public class UpdateProfileController extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			UserModel orgUser = (UserModel) SessionUtil.getAttribute(req, "user");
-			
-			String newFirstName = req.getParameter("first-name");
-			String newLastName = req.getParameter("last-name");
-			String newPhoneNum = req.getParameter("phone-num");
-			String newEmail = req.getParameter("email");
-			
+
+			String newFirstName = req.getParameter("first-name").trim();
+			String newLastName = req.getParameter("last-name").trim();
+			String newPhoneNum = req.getParameter("phone-num").trim();
+			String newEmail = req.getParameter("email").trim();
+
 			String firstNameError = validateFirstName(req, newFirstName);
 			String lastNameError = validateLastName(req, newLastName);
 			String phoneNumError = validatePhoneNum(req, newPhoneNum);
 			String emailError = validateEmail(req, newEmail);
-			
-			
+
+
 			if (firstNameError != null || lastNameError != null || phoneNumError != null || emailError != null) {
 				handleInputError(req, resp, firstNameError, lastNameError, phoneNumError, emailError);
 				return;
 			}
-			
+
 			if(newFirstName.equals(orgUser.getFirstName()) && newLastName.equals(orgUser.getLastName()) && newPhoneNum.equals(orgUser.getPhone()) && newEmail.equals(orgUser.getEmail())) {
 				handleError(req, resp, "No changes detected. Please modify some fields before updating.");
 				return;
 			}
-			
+
 			String registeredPhone = null;
 			String registeredEmail = null;
-			
+
 			if(!newPhoneNum.equals(orgUser.getPhone())) {
 				registeredPhone = validateRegisteredPhoneNum(req, newPhoneNum);
-							
+
 			}
 			if(!newEmail.equals(orgUser.getEmail())){
 				registeredEmail = validateRegisteredEmail(req, newEmail);
 			}
-			
+
 			if(registeredPhone != null || registeredEmail != null) {
 				handleRegisteredError(req, resp, registeredPhone, registeredEmail);
 				return;
-			}	
-			
+			}
+
 			String username = (String) SessionUtil.getAttribute(req, "username");
-			
+
 			// Creating a new instance of UserModel
 			UserModel updatedUser = new UserModel(username, newFirstName, newLastName, newPhoneNum, newEmail);
-			
-			// Adding the user to the database
+
+			// updating the user to the database
 			if (profileService.updateUser(updatedUser)) {
 				SessionUtil.setAttribute(req, "successMessage", "Your profile info has been successfuly updated.");
-				req.setAttribute("activeSection", "information");
+				req.setAttribute("activeSection", "info-section");
 				resp.sendRedirect("ProfileInfo");
 			}
 			else {
 				handleError(req, resp, "Failed to update. Try again.");
-			}		
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			handleError(req, resp, "Cannot Connect to Server. Please try again!");
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -126,16 +126,16 @@ public class UpdateProfileController extends HttpServlet {
 		else if(!ValidationUtil.validateName(firstName)) {
 			return "Should contain only alphabets.";
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
-	private String validateLastName(HttpServletRequest req, String lastName) {		
+	private String validateLastName(HttpServletRequest req, String lastName) {
 		// Validation for lastName
 		if(ValidationUtil.isNullOrEmpty(lastName)) {
 			return "Required.";
@@ -145,14 +145,14 @@ public class UpdateProfileController extends HttpServlet {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
 	private String validatePhoneNum(HttpServletRequest req, String phoneNum) {
-		
+
 		// Validation for Phone number
 		if(ValidationUtil.isNullOrEmpty(phoneNum)) {
 			return "Required.";
@@ -162,13 +162,13 @@ public class UpdateProfileController extends HttpServlet {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
-	private String validateEmail(HttpServletRequest req, String email) {		
+	private String validateEmail(HttpServletRequest req, String email) {
 		// Validation for email
 		if(ValidationUtil.isNullOrEmpty(email)) {
 			return "Required.";
@@ -178,9 +178,9 @@ public class UpdateProfileController extends HttpServlet {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
@@ -190,33 +190,20 @@ public class UpdateProfileController extends HttpServlet {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @return
 	 */
-	private String validateRegisteredEmail(HttpServletRequest req, String email) {		
+	private String validateRegisteredEmail(HttpServletRequest req, String email) {
 		if (profileService.checkEmail(email)) {
 			return "email already exists";
 		}
 		return null;
 	}
+
 	
-	/**
-	 * 
-	 * @param req
-	 * @param resp
-	 * @param firstNameError
-	 * @param lastNameError
-	 * @param userNameError
-	 * @param phoneNumError
-	 * @param passwordError
-	 * @param cpasswordError
-	 * @param emailError
-	 * @throws ServletException
-	 * @throws IOException
-	 */
 	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String firstNameError, String lastNameError,
 			String phoneNumError, String emailError) throws ServletException, IOException {
 		req.setAttribute("firstName", firstNameError);
@@ -226,23 +213,16 @@ public class UpdateProfileController extends HttpServlet {
 		req.setAttribute("activeSection", "edit-profile");
 		req.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(req, resp);
 	}
+
 	
-	/**
-	 * 
-	 * @param req
-	 * @param resp
-	 * @param message
-	 * @throws ServletException
-	 * @throws IOException
-	 */
 	private void handleError(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException{
 		req.setAttribute("errorMessage", message);
 		req.setAttribute("activeSection", "edit-profile");
 		req.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(req, resp);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @param resp
 	 * @param usernameError
@@ -251,7 +231,7 @@ public class UpdateProfileController extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void handleRegisteredError(HttpServletRequest req, HttpServletResponse resp, String phoneNumError, String emailError) 
+	private void handleRegisteredError(HttpServletRequest req, HttpServletResponse resp, String phoneNumError, String emailError)
 			throws ServletException, IOException{
 		req.setAttribute("phoneNum", phoneNumError);
 		req.setAttribute("email", emailError);

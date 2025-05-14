@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,30 +24,66 @@
 		<div class = "stat-container">
 			<div class = "stat-section">
 				<div class = "statistic">
-					<p>Total Users</p>
+					<p class = "stat-head">Total Users</p>
 					<h4>USERS COUNT: ${userCount}</h4>
 					<a href = "${pageContext.request.contextPath}/ManageUser">Manage Users</a>
 				</div>
 				<div class = "statistic">
-					<p>Total Medicine</p>
+					<p class = "stat-head">Total Medicine</p>
 					<h4>MEDICINES COUNT: ${medCount}</h4>
 					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageMed">Manage Medicines</a>
 				</div>
 				<div class = "statistic">
-					<p>Pending Tickets</p>
+					<p class = "stat-head">Pending Tickets</p>
 					
 					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageTickets">Manage Tickets</a>
 				</div>
 			</div>
 			<div class = "stat-section">
-				<div class = "statistic">
-					<p>Recently Registered Users</p>
+				<div class = "statistic down">
+					<p class = "stat-head">Recently Registered Users</p>
+					<table>
+						<tr>
+							<th>Username</th>
+							<th>FullName</th>
+						</tr>
+						<c:forEach var = "recentUser" items = "${recentUsers}">
+							<tr>
+								<td><p class = "stat-data">${recentUser.userName}</p></td>
+								<td><p class = "stat-data">${recentUser.firstName} ${recentUser.lastName}</p></td>
+							</tr>
+						</c:forEach>
+					</table>
 				</div>
-				<div class = "statistic">
-					<p>Recently Registered Medicines</p>
+				<div class = "statistic down">
+					<p class = "stat-head">Recently Registered Medicines</p>
+					<table>
+						<tr>
+							<th>Medicine Id</th>
+							<th>Name</th>
+						</tr>
+						<c:forEach var = "recentMed" items = "${recentMeds}">
+							<tr>
+								<td><p class = "stat-data">${recentMed.id}</p></td>
+								<td><p class = "stat-data">${recentMed.name}</p></td>
+							</tr>
+						</c:forEach>
+					</table>
 				</div>
-				<div class = "statistic">
-					<p>Recently created Tickets</p>
+				<div class = "statistic down">
+					<p class = "stat-head">Recently created Tickets</p>
+					<table>
+						<tr>
+							<th>Ticket Id</th>
+							<th>status</th>
+						</tr>
+						<c:forEach var = "recentMed" items = "${recentTickets}">
+							<tr>
+								<td><p class = "stat-data"></p></td>
+								<td><p class = "stat-data"></p></td>
+							</tr>
+						</c:forEach>
+					</table>
 				</div>
 			</div>
 		</div>

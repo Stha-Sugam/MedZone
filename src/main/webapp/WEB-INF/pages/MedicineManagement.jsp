@@ -16,21 +16,37 @@
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/admindashboardshortcut.png">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<style>
-    .hidden {
-        display: none !important;
-    }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;0,500;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
 	<jsp:include page = "Header.jsp"/>
 	<main>
-		<div class = "return-container">
-			<a href = "${pageContext.request.contextPath}/Admin">Return</a>
+		<div class = "success-messages" id = "success-messages">
+			<h1 class = "success-msg">
+			<c:if test = "${not empty successMessage}">
+				${successMessage}
+			</c:if>
+			<c:remove var="successMessage" scope="session"/>
+			</h1>
+		</div>
+		<div class = "error-messages" id = "error-messages">
+			<h1 class = "error-msg">
+			<c:if test = "${not empty errorMessage}">
+				${errorMessage}
+			</c:if>
+			<c:remove var = "errorMessage" scope = "session"/>
+			</h1>
+		</div>
+		<div class = "action-contain">
+			<div class = "return-container ${not empty medToUpdate ? 'hidden' : ''}">
+				<a href = "${pageContext.request.contextPath}/Admin">Return to Dashboard</a>
+			</div>
+			<div class = "add-container ${not empty medToUpdate ? 'hidden' : ''}">
+	        	<a class = "med-add" href = "${pageContext.request.contextPath}/AddMed">Add New Medicine</a>
+			</div>
 		</div>
 		<div class = "manage-container">
-			<div class="table-container" id = "table-page" class="${not empty medToUpdate ? 'hidden' : ''}">
+			<div class="table-container ${not empty medToUpdate ? 'hidden' : ''}" id = "table-page">
 			    <table>
 			        <thead>
 			            <tr>
@@ -57,9 +73,9 @@
 			                    <td class = "med-actions">
 			                        <form action = "UpdateMed" method = "get">
 									    <input type = "hidden" name = "medsId" value = "${medicine.id}">
-									    <button type="submit" class="med-update">Update</button>
+									    <button type = "submit" class="med-update" onclick = "showUpdateForm()">Edit</button>
 									</form>
-			                        <form action = "DeleteMed" method = "post">
+			                        <form class = "delete-form" action = "DeleteMed" method = "post">
 			                            <input type = "hidden" name = "medsId" value = "${medicine.id}">
 			                            <button class = "med-delete" type = "submit">Delete</button>
 			                        </form>
@@ -70,7 +86,7 @@
 			    </table>
 			</div>
 
-			<div class = "form-container" id = "form-page" class="${empty medToUpdate ? 'hidden' : ''}">
+			<div class = "form-container ${not empty medToUpdate ? 'show' : ''}" id = "form-page">
 				<h2 class = "head">Update Medicine Information</h2>
 				<form class = "form" id = "update-med" action = "UpdateMed" method = "post">
 					<div class = "single-section">
@@ -80,7 +96,7 @@
 								<p class = "id-error">(Id cannot be changed.)</p>
 							</div>
 							<div class = "normal-input">
-								<input type = "text" id = "id" name = "id" value = "${medToUpdate.id}" readonly>
+								<input type = "text" id = "id" name = "id" value = "${medIdtoUpdate}" readonly>
 							</div>
 							<p class = "field-error"> &nbsp; </p>
 						</div>
@@ -166,7 +182,7 @@
 							<label>Usage</label>
 							<c:set var = "usageError" value = "${requestScope.errorUsage}"/>
 							<div class = "${empty usageError? 'normal-input' : 'error-input'}">
-								<textarea id = "usage" name = "usage" rows="8" cols="50">${medToUpdate.usage}</textarea>
+								<textarea id = "usage" name = "usage" rows="3" cols="50">${medToUpdate.usage}</textarea>
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -187,11 +203,93 @@
 				</form>
 			</div>
 		</div>
-
-		<div class = "add-container">
-        	<a class = "med-add" href = "${pageContext.request.contextPath}/AddMed">Add Medicine</a>
-		</div>
+		<div class="delete-popup-overlay" id="deletePopupOverlay">
+            <div class="delete-popup">
+                <h3>Confirm Delete</h3>
+                <p>Are you sure you want to delete this medicine information?</p>
+                <div class="delete-actions">
+                    <button type = "button" class = "confirm-delete" onclick="document.querySelector('#deletePopupOverlay').dataset.confirmed = 'true'; submitDeleteForm();">Yes, Delete</button>
+                    <button type = "button" class = "cancel-delete" onclick="hideDeletePopup()">Cancel</button>
+                </div>
+            </div>
+        </div>
 	</main>
 	<jsp:include page = "Footer.jsp"/>
+	<script>
+		let currentDeleteForm = null;
+
+		function showUpdateForm() {
+			const formContainer = document.getElementById('form-page');
+			const tableContainer = document.getElementById('table-page');
+			const returnContainer = document.querySelector('.return-container');
+			if (formContainer && tableContainer && returnContainer) {
+				formContainer.classList.add('show');
+				tableContainer.classList.add('hidden');
+				returnContainer.classList.add('hidden');
+			}
+		}
+
+		function showDeletePopup(deleteButton) {
+			const popupOverlay = document.getElementById('deletePopupOverlay');
+			popupOverlay.style.display = 'flex';
+			currentDeleteForm = deleteButton.closest('.delete-form');
+
+			popupOverlay.dataset.triggeringButton = deleteButton;
+			popupOverlay.dataset.confirmed = 'false';
+		}
+
+		function hideDeletePopup() {
+			const popupOverlay = document.getElementById('deletePopupOverlay');
+			popupOverlay.style.display = 'none';
+			currentDeleteForm = null;
+			delete popupOverlay.dataset.triggeringButton;
+			popupOverlay.dataset.confirmed = 'false';
+		}
+
+		function submitDeleteForm() {
+			const popupOverlay = document.getElementById('deletePopupOverlay');
+			if (popupOverlay.dataset.confirmed === 'true' && currentDeleteForm) {
+				currentDeleteForm.submit();
+			}
+			hideDeletePopup();
+		}
+
+
+		document.addEventListener('DOMContentLoaded', function() {
+			const deleteForms = document.querySelectorAll('.delete-form');
+			deleteForms.forEach(function(form) {
+				const deleteButton = form.querySelector('.med-delete[type="submit"]');
+				if (deleteButton) {
+					deleteButton.addEventListener('click', function(event) {
+						event.preventDefault();
+						showDeletePopup(this);
+					});
+				}
+			});
+
+			const success = document.getElementById("success-messages");
+			if (success && success.innerText.trim().length > 0) {
+				success.classList.add("active");
+				setTimeout(() => success.classList.remove("active"), 5000);
+			}
+
+			const error = document.getElementById("error-messages");
+			if (error && error.innerText.trim().length > 0) {
+				error.classList.add("active");
+				setTimeout(() => error.classList.remove("active"), 5000);
+			}
+		});
+
+		document.addEventListener("DOMContentLoaded", function () {
+			const formContainer = document.getElementById('form-page');
+			const tableContainer = document.getElementById('table-page');
+			const returnContainer = document.querySelector('.return-container');
+			if ("${not empty medToUpdate}" === "true" && formContainer && tableContainer && returnContainer) {
+				formContainer.classList.add('show');
+				tableContainer.classList.add('hidden');
+				returnContainer.classList.add('hidden');
+			}
+		});
+	</script>
 </body>
 </html>

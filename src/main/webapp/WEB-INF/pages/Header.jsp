@@ -75,7 +75,7 @@
 			
 			<div class="sidebar" id="sidebar">
 					<ul class = "side-container">
-					<li class = "side-items home"><a href="${pageContext.request.contextPath}/Home">Home</a></li>
+					<li class = "side-items home"><a href = "${pageContext.request.contextPath}/Home">Home</a></li>
 					<c:choose>
 						<c:when test = "${role == 'admin'}">
 							<li class = "side-items dashboard"><a href="${pageContext.request.contextPath}/Admin">Dashboard</a></li>
@@ -86,7 +86,11 @@
 							<li class = "side-items contact"><a href="${pageContext.request.contextPath}/Contact">Contact</a></li>
 						</c:otherwise>
 					</c:choose>
-					
+					<li class = "side-items home">
+						<a href = "${pageContext.request.contextPath}/ProfileInfo">
+							Profile
+						</a>
+					</li>
 					<li class = "side-items logout">
 						<form action = "Logout" id = "side-Logout" method = "post">
 							<button type = "submit">Log Out</button>

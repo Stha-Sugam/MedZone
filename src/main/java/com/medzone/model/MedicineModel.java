@@ -34,6 +34,22 @@ public class MedicineModel {
 		this.usage = usage;
 		this.addedDate = addedDate;
 	}
+	
+	public MedicineModel(String id, String name, String brand, String form, String strength, String usage) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.brand = brand;
+		this.form = form;
+		this.strength = strength;
+		this.usage = usage;
+	}
+	
+	public MedicineModel(String id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public String getId() {
 		return id;

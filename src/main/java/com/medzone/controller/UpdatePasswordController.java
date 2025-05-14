@@ -20,7 +20,7 @@ import com.medzone.util.ValidationUtil;
 public class UpdatePasswordController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final ProfileService profileService = new ProfileService();
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -43,38 +43,37 @@ public class UpdatePasswordController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 		String username = (String) SessionUtil.getAttribute(request, "username");
 		String oldPass = request.getParameter("oldPassword");
 		String newPass = request.getParameter("newPassword");
 		String confirmPass = request.getParameter("cpassword");
-		
+
 		String oldPassError = validateOldPassword(request, oldPass);
 		String newPassError = validatePassword(request, newPass);
 		String cpassError = validateCPassword(request, newPass, confirmPass);
-		
+
 		if(oldPassError != null || newPassError != null || cpassError != null) {
 			handleInputError(request, response, oldPassError, newPassError, cpassError);
 			return;
 		}
-		
+
 		try {
 			UserModel user = new UserModel(username, oldPass);
 			Boolean correct = profileService.checkPassword(user);
-			
+
 			if(!correct) {
 				request.setAttribute("oldPassword", "Incorrect Password.");
 				request.setAttribute("activeSection", "update-password");
 				request.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(request, response);
 				return;
 			}
-			
+
 			String newEncryptedPass = PasswordUtil.encrypt(username, newPass);
 			UserModel changePassUser = new UserModel(username, newEncryptedPass);
-			Boolean passChanged = profileService.updatePassword(changePassUser);
-			if(passChanged) {
+			if(profileService.updatePassword(changePassUser)) {
 				SessionUtil.setAttribute(request, "successMessage", "Your password has been successfully changed.");
-				request.setAttribute("activeSection", "inforamtion");
+				request.setAttribute("activeSection", "info-section");
 				response.sendRedirect(request.getContextPath() + "/ProfileInfo");
 			}
 		}
@@ -83,7 +82,7 @@ public class UpdatePasswordController extends HttpServlet {
 			handleError(request, response, "Cannot Connect to Server. Please try again!");
 		}
 	}
-	
+
 	private String validateOldPassword(HttpServletRequest req, String oldPassword) {
 		if (ValidationUtil.isNullOrEmpty(oldPassword)) {
 			System.out.println("old password null");
@@ -91,8 +90,8 @@ public class UpdatePasswordController extends HttpServlet {
 		}
 		return null;
 	}
-	
-	private String validatePassword(HttpServletRequest req, String password) {		
+
+	private String validatePassword(HttpServletRequest req, String password) {
 		// Validation for password
 		if(ValidationUtil.isNullOrEmpty(password)) {
 			System.out.println("new password null");
@@ -103,8 +102,8 @@ public class UpdatePasswordController extends HttpServlet {
 		}
 		return null;
 	}
-	
-	private String validateCPassword(HttpServletRequest req, String password, String cpassword) {		
+
+	private String validateCPassword(HttpServletRequest req, String password, String cpassword) {
 		// Validation for confirm password
 		if(ValidationUtil.isNullOrEmpty(cpassword)) {
 			return "Required.";
@@ -114,9 +113,9 @@ public class UpdatePasswordController extends HttpServlet {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param req
 	 * @param resp
 	 * @param message
@@ -128,8 +127,8 @@ public class UpdatePasswordController extends HttpServlet {
 		req.setAttribute("activeSection", "update-password");
 		req.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(req, resp);
 	}
-	
-	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String oldPassError, String newPassError, String cPassError) 
+
+	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String oldPassError, String newPassError, String cPassError)
 			throws ServletException, IOException {
 		req.setAttribute("oldPassword", oldPassError);
 		req.setAttribute("newPassword", newPassError);

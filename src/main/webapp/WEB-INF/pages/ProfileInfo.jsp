@@ -48,7 +48,7 @@
 				</ul>
 			</div>
 			<div class = "right-container">
-				<div class = "information content-div" id="info-section">
+				<div class = "information content-div" id="info-section" style="display: none;">
 					<div class = "info-head">
 						<h2>Your Account Information</h2>
 						<a class = "menu-item" data-target="edit-profile" style = "cursor:pointer;">Edit profile</a>
@@ -61,7 +61,7 @@
 								<p>${user.userName}</p>
 							</div>
 							<div class = "info-inner">
-								<h4>FULL NAME</h4> 
+								<h4>FULL NAME</h4>
 								<p>${user.firstName} ${user.lastName}</p>
 							</div>
 						</div>
@@ -75,7 +75,7 @@
 	                    		<h4>PHONE NUMBER</h4>
 	                    		<p>+977 ${user.phone}</p>
 	                    	</div>
-	                    	
+
 	                    </div>
 	                    <div class = "info-section">
 	                    	<h3>Other Information</h3>
@@ -86,7 +86,7 @@
 	                    </div>
 	                </div>
 	            </div>
-	            <div class = "updatePassword content-div" id = "update-password">
+	            <div class = "updatePassword content-div" id = "update-password" style="display: none;">
 		            <h2 class = "head">Update your Password</h2>
 					<form class = "form" id = "UpdatePassword" action = "UpdatePassword" method = "post">
 						<div class = "single-section">
@@ -166,7 +166,7 @@
 						</div>
 					</form>
 				</div>
-				<div class = "updateProfile content-div" id = "edit-profile">
+				<div class = "updateProfile content-div" id = "edit-profile" style="display: none;">
 					<h2 class = "head">Edit your profile</h2>
 					<form class = "form" id = "update-info" action = "UpdateProfile" method = "post">
 						<div class = "single-section">
@@ -272,51 +272,63 @@
 		</div>
 	</main>
 	<script>
-	    document.addEventListener("DOMContentLoaded", () => {
-	        const success = document.getElementById("success-messages");
-	        if (success && success.innerText.trim().length > 0) {
-	            success.classList.add("active");
-	            setTimeout(() => success.classList.remove("active"), 5000);
-	        }
-	
-	        const error = document.getElementById("error-messages");
-	        if (error && error.innerText.trim().length > 0) {
-	            error.classList.add("active");
-	            setTimeout(() => error.classList.remove("active"), 5000);
-	        }
-	
-	        const navLinks = document.querySelectorAll("a[data-target]");
-	        const contentDivs = document.querySelectorAll(".content-div");
-	
-	        function showSection(targetId) {
-	            contentDivs.forEach(div => {
-	                div.style.display = div.id === targetId ? "block" : "none";
-	            });
-	
-	            navLinks.forEach(link => {
-	                if (link.getAttribute("data-target") === targetId) {
-	                    link.classList.add("active-link");
-	                } else {
-	                    link.classList.remove("active-link");
-	                }
-	            });
-	
-	            // Save to localStorage
-	            localStorage.setItem("activeSection", targetId);
-	        }
-	
-	        navLinks.forEach(link => {
-	            link.addEventListener("click", (e) => {
-	                e.preventDefault();
-	                const targetId = link.getAttribute("data-target");
-	                showSection(targetId);
-	            });
+	document.addEventListener("DOMContentLoaded", () => {
+	    const success = document.getElementById("success-messages");
+	    if (success && success.innerText.trim().length > 0) {
+	        success.classList.add("active");
+	        setTimeout(() => success.classList.remove("active"), 5000);
+	    }
+
+	    const error = document.getElementById("error-messages");
+	    if (error && error.innerText.trim().length > 0) {
+	        error.classList.add("active");
+	        setTimeout(() => error.classList.remove("active"), 5000);
+	    }
+
+	    const navLinks = document.querySelectorAll("a[data-target]");
+	    const contentDivs = document.querySelectorAll(".content-div");
+
+	    function showSection(targetId) {
+	        contentDivs.forEach(div => {
+	            div.style.display = div.id === targetId ? "block" : "none";
 	        });
-	
-	        // Restore from localStorage, or fallback to default
-	        const savedSection = localStorage.getItem("activeSection") || "info-section";
-	        showSection(savedSection);
+
+	        navLinks.forEach(link => {
+	            navLinks.forEach(nl => nl.classList.remove("active-link"));
+	            const activeLink = Array.from(navLinks).find(link => link.getAttribute("data-target") === targetId);
+	            if (activeLink) {
+	                activeLink.classList.add("active-link");
+	            }
+	        });
+
+	        localStorage.setItem("activeSection", targetId);
+	    }
+
+	    navLinks.forEach(link => {
+	        link.addEventListener("click", (e) => {
+	            e.preventDefault();
+	            const targetId = link.getAttribute("data-target");
+	            showSection(targetId);
+	        });
 	    });
+
+	    const activeSectionFromServer = "${activeSection}";
+	    let initialSection = "info-section";
+
+	    if (activeSectionFromServer) {
+	        initialSection = activeSectionFromServer;
+	    } else if (localStorage.getItem("activeSection")) {
+	        initialSection = localStorage.getItem("activeSection");
+	    }
+
+	    showSection(initialSection);
+
+	    navLinks.forEach(link => {
+	        if (link.getAttribute("data-target") === initialSection) {
+	            link.classList.add("active-link");
+	        }
+	    });
+	});
 	</script>
 	<jsp:include page = "Footer.jsp"/>
 </body>

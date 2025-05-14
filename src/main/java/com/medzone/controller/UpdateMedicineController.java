@@ -6,6 +6,8 @@ import jakarta.servlet.http.*;
 
 import com.medzone.model.MedicineModel;
 import com.medzone.service.MedicineManagementService;
+import com.medzone.util.SessionUtil;
+import com.medzone.util.ValidationUtil;
 
 import java.io.IOException;
 
@@ -19,22 +21,14 @@ public class UpdateMedicineController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	SessionUtil.removeAttribute(request, "medToUpdate");
+        SessionUtil.removeAttribute(request, "medIdtoUpdate");
+        
         String medicineId = request.getParameter("medsId");
+        SessionUtil.setAttribute(request, "medIdtoUpdate", medicineId);
 
-        if (medicineId != null && !medicineId.trim().isEmpty()) {
-            MedicineModel medicine = medicineService.extractMedicine(medicineId);
-            System.out.println(medicine);
-
-            if (medicine != null) {
-                request.setAttribute("medToUpdate", medicine);
-                // The form will be shown because medToUpdate is not empty
-            } else {
-                request.setAttribute("errorName", "Medicine not found.");
-            }
-        } else {
-            request.setAttribute("errorName", "Invalid medicine ID.");
-        }
-
+        MedicineModel medicine = medicineService.extractMedicine(medicineId);
+        SessionUtil.setAttribute(request, "medToUpdate", medicine);
         request.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(request, response);
     }
 
@@ -42,55 +36,100 @@ public class UpdateMedicineController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+        	String id = (String) SessionUtil.getAttribute(request, "medIdtoUpdate");
+        	MedicineModel orgMed = medicineService.extractMedicine(id);
+        	
+            String name = request.getParameter("name").trim();
+            String brand = request.getParameter("brand").trim();
+            String form = request.getParameter("form").trim();
+            String strength = request.getParameter("strength").trim();
+            String usage = request.getParameter("usage").trim();
 
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
-        String brand = request.getParameter("brand");
-        String form = request.getParameter("form");
-        String strength = request.getParameter("strength");
-        String usage = request.getParameter("usage");
+            String nameError = validateName(request, name);
+            String brandError = validateBrand(request, brand);
+            String formError = validateForm(request, form);
+            String strengthError = validateStrength(request, strength);
+            String usageError = validateUsage(request, usage);
 
-        boolean hasError = false;
+            MedicineModel medicine = new MedicineModel(id, name, brand, form, strength, usage);
 
-        // Validation
-        if (name == null || name.trim().isEmpty()) {
-            request.setAttribute("errorName", "Name is required.");
-            hasError = true;
-        }
-        if (brand == null || brand.trim().isEmpty()) {
-            request.setAttribute("errorBrand", "Brand is required.");
-            hasError = true;
-        }
-        if (form == null || form.trim().isEmpty()) {
-            request.setAttribute("errorForm", "Dosage form is required.");
-            hasError = true;
-        }
-        if (strength == null || strength.trim().isEmpty()) {
-            request.setAttribute("errorStrength", "Strength is required.");
-            hasError = true;
-        }
-        if (usage == null || usage.trim().isEmpty()) {
-            request.setAttribute("errorUsage", "Usage is required.");
-            hasError = true;
-        }
-
-        // Create medicine model from form input
-        MedicineModel medicine = new MedicineModel(id, name, brand, form, strength, usage, null);
-
-        if (hasError) {
-            // Show form again with existing input and error messages
-            request.setAttribute("medToUpdate", medicine);
-            request.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(request, response);
-        } else {
-            // Attempt update in service
-            boolean updated = medicineService.updateMedicine(medicine);
-            if (updated) {
-                response.sendRedirect("ManageMed");
-            } else {
-                request.setAttribute("errorName", "Failed to update medicine. Try again.");
+            if(nameError != null || brandError != null || formError != null || strengthError != null || usageError != null) {
                 request.setAttribute("medToUpdate", medicine);
-                request.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(request, response);
+                handleInputError(request, response, nameError, brandError, formError, strengthError, usageError);
+                return;
             }
+
+            if(orgMed != null && name.equals(orgMed.getName()) && brand.equals(orgMed.getBrand()) && form.equals(orgMed.getForm()) && strength.equals(orgMed.getStrength())
+                    && usage.equals(orgMed.getUsage())) {
+                request.setAttribute("medToUpdate", medicine);
+                handleError(request, response, "No changes detected. Please modify some fields before updating.");
+                return;
+            }
+
+            if(medicineService.updateMedicine(medicine)) {
+                SessionUtil.setAttribute(request, "successMessage", "Medicine information has been successfully updated.");
+                response.sendRedirect("ManageMed");
+            }
+            else {
+                request.setAttribute("medToUpdate", medicine);
+                handleError(request, response, "Failed to update. Try again.");
+            }
+        } catch(Exception e){
+            request.setAttribute("medToUpdate", new MedicineModel(request.getParameter("medsId"), request.getParameter("name"), request.getParameter("brand"), 
+            		request.getParameter("form"), request.getParameter("strength"), request.getParameter("usage")));
+            e.printStackTrace();
+            handleError(request, response, "Cannot Connect to Server. Please try again!");
         }
+    }
+
+    private String validateName(HttpServletRequest req, String name) {
+        if(ValidationUtil.isNullOrEmpty(name)) {
+            return "Required.";
+        }
+        return null;
+    }
+
+    private String validateBrand(HttpServletRequest req, String brand) {
+        if(ValidationUtil.isNullOrEmpty(brand)) {
+            return "Required.";
+        }
+        return null;
+    }
+
+    private String validateForm(HttpServletRequest req, String form) {
+        if(ValidationUtil.isNullOrEmpty(form)) {
+            return "Required.";
+        }
+        return null;
+    }
+
+    private String validateStrength(HttpServletRequest req, String strength) {
+        if(ValidationUtil.isNullOrEmpty(strength)) {
+            return "Required.";
+        }
+        return null;
+    }
+
+    private String validateUsage(HttpServletRequest req, String usage) {
+        if(ValidationUtil.isNullOrEmpty(usage)) {
+            return "Required.";
+        }
+        return null;
+    }
+
+    private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String nameError, String brandError,
+            String formError, String strengthError, String usageError) throws ServletException, IOException {
+        req.setAttribute("errorName", nameError);
+        req.setAttribute("errorBrand", brandError);
+        req.setAttribute("errorForm", formError);
+        req.setAttribute("errorStrength", strengthError);
+        req.setAttribute("errorUsage", usageError);
+        req.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(req, resp);
+    }
+
+    private void handleError(HttpServletRequest req, HttpServletResponse resp, String message) throws ServletException, IOException{
+        req.setAttribute("errorMessage", message);
+        req.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(req, resp);
     }
 }

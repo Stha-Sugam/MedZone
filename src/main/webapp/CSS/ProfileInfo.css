@@ -108,6 +108,10 @@ h2.head,
     color: var(--primary);
 }
 
+.info-head .menu-item{
+	border-radius: 10px;
+}
+
 .right-container {
     width: 60%;
     padding: 30px;
@@ -184,7 +188,7 @@ h2.head,
 .form .normal-input,
 .form .error-input {
     padding: 10px 15px;
-    border-radius: 30px;
+    border-radius: 10px;
     background-color: var(--light);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     font-size: 0.9rem;
@@ -238,7 +242,7 @@ h2.head,
     display: block;
     text-align: center;
     width: 48%;
-    border-radius: 30px;
+    border-radius: 10px;
     font-size: 1rem;
     padding: 11px;
     font-weight: bold;
@@ -269,7 +273,6 @@ button.submit:hover {
     cursor: pointer;
 }
 
-.error-message,
 .success-messages,
 .error-messages {
     position: fixed;
@@ -292,8 +295,6 @@ button.submit:hover {
     height: 50px;
 }
 
-.error-message .err-message,
-.error-message .error-msg,
 .error-messages .error-msg,
 .success-messages .success-msg {
     font-size: 1rem;
@@ -311,12 +312,9 @@ button.submit:hover {
 }
 
 .success-messages.active,
-.error-messages.active,
-.error-message.active {
+.error-messages.active{
     right: 10px;
 }
-
-/* Info Section */
 
 .info-head {
     display: flex;
@@ -346,7 +344,7 @@ button.submit:hover {
 
 .info-section {
     border-top: 4px solid var(--primary);
-    border-radius: 30px;
+    border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     padding: 20px;
     margin: 10px 0;

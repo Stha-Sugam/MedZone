@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.medzone.config.DbConfig;
+import com.medzone.model.MedicineModel;
+import com.medzone.model.UserModel;
 
 public class DashboardService {
 	private Connection dbConn;
@@ -67,4 +70,51 @@ public class DashboardService {
 			return -1;
 		}
 	}
+	
+	public ArrayList<MedicineModel> GetRecentMeds() {
+		ArrayList<MedicineModel> medicineList = new ArrayList<>();
+
+		if (isConnectionError) {
+			System.out.println("Connection Error!");
+			return medicineList;
+		}
+
+		String extractQuery = "SELECT med_id, name FROM medicines ORDER BY added_date LIMIT 4";
+		try (PreparedStatement stmt = dbConn.prepareStatement(extractQuery)) {
+			ResultSet medicine = stmt.executeQuery();
+
+			while (medicine.next()) {
+				medicineList.add(new MedicineModel(medicine.getString("med_id"), medicine.getString("name")));
+			}
+
+			return medicineList;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public ArrayList<UserModel> GetRecentUsers() {
+		ArrayList<UserModel> usersList = new ArrayList<>();
+		
+		if (isConnectionError) {
+			System.out.println("Connection Error!");
+		}
+		
+		String extractQuery = "SELECT username, first_name, last_name  FROM users ORDER BY registration_date LIMIT 4";
+		try(PreparedStatement stmt = dbConn.prepareStatement(extractQuery)){
+			ResultSet user = stmt.executeQuery();
+			
+			while(user.next()) {
+				usersList.add(new UserModel(user.getString("username"), user.getString("first_Name"), user.getString("last_name")));
+			}
+			
+			return usersList;
+		}
+		catch(SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
 }
+

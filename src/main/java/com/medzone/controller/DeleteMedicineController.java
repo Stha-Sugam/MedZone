@@ -11,17 +11,17 @@ import com.medzone.service.MedicineManagementService;
 import com.medzone.util.SessionUtil;
 
 /**
- * Servlet implementation class ManageMedController
+ * Servlet implementation class DeleteMedicineController
  */
-@WebServlet("/ManageMed")
-public class ManageMedController extends HttpServlet {
+@WebServlet("/DeleteMed")
+public class DeleteMedicineController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final MedicineManagementService manageMedicineService = new MedicineManagementService();
+	private final MedicineManagementService medicineService = new MedicineManagementService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ManageMedController() {
+    public DeleteMedicineController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,9 +31,7 @@ public class ManageMedController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		SessionUtil.removeAttribute(request, "medToUpdate");
-	    SessionUtil.removeAttribute(request, "medIdtoUpdate");
-		SessionUtil.setAttribute(request, "medicineDetails", manageMedicineService.GetMedDetails());
+        
 		request.getRequestDispatcher("WEB-INF/pages/MedicineManagement.jsp").forward(request, response);
 	}
 
@@ -42,7 +40,16 @@ public class ManageMedController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String medicineId = request.getParameter("medsId");
+
+        if(medicineService.deleteMedicine(medicineId)){
+            SessionUtil.setAttribute(request, "successMessage", "Medicine information has been successfully deleted.");
+        }
+        else {
+            request.setAttribute("errorMessage", "Failed to deleted medicine information.");
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/ManageMed");
 	}
 
 }

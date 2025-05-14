@@ -33,6 +33,8 @@ public class AdminDashboardController extends HttpServlet {
 		// TODO Auto-generated method stub
 		SessionUtil.setAttribute(request, "userCount",dashboardService.GetUserCount());
 		SessionUtil.setAttribute(request, "medCount", dashboardService.GetMedicineCount());
+		SessionUtil.setAttribute(request, "recentMeds", dashboardService.GetRecentMeds());
+		SessionUtil.setAttribute(request,"recentUsers", dashboardService.GetRecentUsers());
 		request.getRequestDispatcher("WEB-INF/pages/AdminDashboard.jsp").forward(request, response);
 	}
 

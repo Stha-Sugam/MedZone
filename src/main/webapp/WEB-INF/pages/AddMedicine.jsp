@@ -124,7 +124,7 @@
 					<label>Usage</label>
 					<c:set var = "usageError" value = "${requestScope.errorUsage}"/>
 					<div class = "${empty usageError? 'normal-input' : 'error-input'}">
-						<textarea id = "usage" name = "usage" rows="8" cols="50" placeholder = "Enter the usage of the medicine"></textarea>
+						<textarea id = "usage" name = "usage" rows="3" cols="50" placeholder = "Enter the usage of the medicine"></textarea>
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -139,7 +139,7 @@
 				</div>
 			</div>
 			<div class = "actions">
-				<a href = "${pageContext.request.contextPath}/ProfileInfo" class = "cancel">Cancel</a>
+				<a href = "${pageContext.request.contextPath}/ManageMed" class = "cancel">Cancel</a>
 				<button class = "submit" type = "submit">Add Medicine</button>
 			</div>
 		</form>

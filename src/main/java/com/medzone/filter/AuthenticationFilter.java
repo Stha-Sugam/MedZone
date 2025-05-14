@@ -40,6 +40,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 	private static final String MANAGEMEDS = "/ManageMed";
 	private static final String ADDMED = "/AddMed";
 	private static final String UPDATEMED = "/UpdateMed";
+	private static final String DELETEMED = "/DeleteMed";
 	private static final String MANAGETICKETS = "/ManageTicket";
 	private static final String MANAGEUSERS = "/ManageUser";
 	
@@ -85,7 +86,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 			if (uri.endsWith(LOGIN) || uri.endsWith(REGISTER) || uri.endsWith(ROOT)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);
 			} else if (uri.endsWith(DASHBOARD) || uri.endsWith(HOME) || uri.endsWith(ROOT) || uri.endsWith(LOGOUT) || uri.endsWith(MANAGEUSERS) || uri.endsWith(MANAGETICKETS)
-					|| uri.endsWith(MANAGEMEDS) || uri.endsWith(ADDMED) || uri.endsWith(UPDATEMED)){
+					|| uri.endsWith(MANAGEMEDS) || uri.endsWith(ADDMED) || uri.endsWith(UPDATEMED) || uri.endsWith(DELETEMED)){
 				chain.doFilter(request, response);
 			} else if (uri.endsWith(PROFILEINFO) || uri.endsWith(EDITPROFILE) || uri.endsWith(EDITPASS) || uri.endsWith(BROWSE) || uri.endsWith(CONTACT) || uri.endsWith(ABOUT)) {
 				res.sendRedirect(req.getContextPath() + DASHBOARD);

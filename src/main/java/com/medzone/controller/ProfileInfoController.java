@@ -41,6 +41,7 @@ public class ProfileInfoController extends HttpServlet {
 			
 			SessionUtil.setAttribute(request, "user", userInfo);
 		}
+		request.setAttribute("activeSection", "info-section");
 		request.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(request, response);
 	}
 }

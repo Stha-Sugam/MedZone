@@ -41,7 +41,7 @@ header{
 .menu-container{
 	display: flex;
 	flex-direction: row;
-	width: 100%;
+	width: 90%;
 	justify-content: space-between;
 }
 
@@ -50,15 +50,14 @@ a{
 }
 
 .logo-container{
-	width: 100px;
+	width: 50px;
 	display:flex;
-	justify-content: flex-start;
 }
 
 .logo{
 	display: flex;
 	align-items: center;
-	width: 5%;
+	width: 100%;
 }
 
 .logo img{
@@ -71,7 +70,7 @@ a{
 	justify-content: center;
 	gap: 20px;
 	list-style: none;
-	width: 80%;
+	width: 60%;
 	margin: auto;
 }
 
@@ -212,7 +211,6 @@ a{
 .log-container{
 	display: flex;
 	list-style: none;
-	width: 11%;
 }
 
 form{

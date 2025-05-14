@@ -72,12 +72,12 @@ public class AddMedicineController extends HttpServlet {
 				return;
 			}
 			
-			MedicineModel medicine = new MedicineModel(name, brand, form, strength, usage, addedDate);
+			MedicineModel medicine = new MedicineModel(id, name, brand, form, strength, usage, addedDate);
 			
 			// Adding the medicine to the database
 			if (manageMedService.addMedicine(medicine)) {
 				SessionUtil.setAttribute(req, "successMessage", "Medicine inforamtion has been successfuly added.");
-				resp.sendRedirect("MedicineManagement");
+				resp.sendRedirect("ManageMed");
 			}
 			else {
 				handleError(req, resp, "Failed to update. Try again.");
