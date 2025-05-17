@@ -1,44 +1,31 @@
 package com.medzone.model;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserModel {
-	private int id;
+	private String userName;
 	private String firstName;
 	private String lastName;
-	private String userName;
 	private String phone;
 	private String password;
 	private String email;
-	private LocalDate registrationDate;
+	private LocalDateTime registrationDate;
 	private boolean isAdmin;
+	private String imageUrl;
 	
 	public UserModel() {}
 
-	public UserModel(int id, String firstName, String lastName, String userName, String phone, String password, String email,
-			LocalDate registrationDate, boolean isAdmin) {
+	public UserModel(String userName, String firstName, String lastName, String phone, String password, String email,
+			LocalDateTime registrationDate, boolean isAdmin, String imageUrl) {
 		super();
-		this.id = id;
+		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.userName = userName;
 		this.phone = phone;
 		this.password = password;
 		this.email = email;
 		this.registrationDate = registrationDate;
 		this.isAdmin = isAdmin;
-	}
-	
-	public UserModel(String firstName, String lastName, String userName, String phone, String password, String email,
-			LocalDate registrationDate, boolean isAdmin) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.userName = userName;
-		this.phone = phone;
-		this.password = password;
-		this.email = email;
-		this.registrationDate = registrationDate;
-		this.isAdmin = isAdmin;
+		this.imageUrl = imageUrl;
 	}
 	
 	public UserModel(String username, String password) {
@@ -53,8 +40,8 @@ public class UserModel {
 		this.lastName = lastName;
 	}
 	
-	public UserModel(String firstName, String lastName, String userName, String phone, String email,
-			LocalDate registrationDate) {
+	public UserModel(String userName, String firstName, String lastName, String phone, String email,
+			LocalDateTime registrationDate, String imageUrl) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -62,15 +49,17 @@ public class UserModel {
 		this.phone = phone;
 		this.email = email;
 		this.registrationDate = registrationDate;
+		this.imageUrl = imageUrl;
 	}
 	
-	public UserModel(String username, String firstName, String lastName, String phone, String email) {
+	public UserModel(String username, String firstName, String lastName, String phone, String email, String imageUrl) {
 		super();
 		this.userName = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
 		this.email = email;
+		this.imageUrl = imageUrl;
 	}
 	
 	public UserModel(String username, String firstName, String lastName) {
@@ -78,14 +67,6 @@ public class UserModel {
 		this.userName = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public UserModel(String userName) {
@@ -140,11 +121,11 @@ public class UserModel {
 		this.email = email;
 	}
 
-	public LocalDate getRegistrationDate() {
+	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
 	}
 
-	public void setRegistrationDate(LocalDate registrationDate) {
+	public void setRegistrationDate(LocalDateTime registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
@@ -154,5 +135,13 @@ public class UserModel {
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

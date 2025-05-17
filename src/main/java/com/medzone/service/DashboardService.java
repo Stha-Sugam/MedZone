@@ -8,7 +8,10 @@ import java.util.ArrayList;
 
 import com.medzone.config.DbConfig;
 import com.medzone.model.MedicineModel;
+import com.medzone.model.TicketModel;
 import com.medzone.model.UserModel;
+
+
 
 public class DashboardService {
 	private Connection dbConn;
@@ -27,7 +30,7 @@ public class DashboardService {
 		}
 	}
 	
-	public int GetUserCount() {
+	public int getUserCount() {
 		if (isConnectionError) {
 			System.out.println("Connection Error!");
 			return -1;
@@ -49,13 +52,13 @@ public class DashboardService {
 		}
 	}
 	
-	public int GetMedicineCount() {
+	public int getMedicineCount() {
 		if (isConnectionError) {
 			System.out.println("Connection Error!");
 			return -1;
 		}
 		
-		String extractMedCountQuery = "SELECT COUNT(*) AS Total_Meds FROM Medicines;";
+		String extractMedCountQuery = "SELECT COUNT(*) AS Total_Meds FROM medicines;";
 		try(PreparedStatement stmt = dbConn.prepareStatement(extractMedCountQuery)){
 			ResultSet userCount = stmt.executeQuery();
 
@@ -71,7 +74,51 @@ public class DashboardService {
 		}
 	}
 	
-	public ArrayList<MedicineModel> GetRecentMeds() {
+	public int getTicketsCount() {
+		if (isConnectionError) {
+			System.out.println("Connection Error!");
+			return -1;
+		}
+		
+		String extractTicketCountQuery = "SELECT COUNT(*) AS Total_Tickets FROM tickets;";
+		try(PreparedStatement stmt = dbConn.prepareStatement(extractTicketCountQuery)){
+			ResultSet ticketCount = stmt.executeQuery();
+			
+			if (ticketCount.next()) {
+				return ticketCount.getInt("Total_Tickets");
+			}
+			else {
+				return 0;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public int getOpenTicketsCount() {
+		if (isConnectionError) {
+			System.out.println("Connection Error!");
+			return -1;
+		}
+		
+		String extractOpenTicketQuery = "SELECT COUNT(*) AS Total_Open FROM tickets WHERE status = 'Open';";
+		try(PreparedStatement stmt = dbConn.prepareStatement(extractOpenTicketQuery)){
+			ResultSet openCount = stmt.executeQuery();
+			
+			if (openCount.next()) {
+				return openCount.getInt("Total_Open");
+			}
+			else {
+				return 0;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public ArrayList<MedicineModel> getRecentMeds() {
 		ArrayList<MedicineModel> medicineList = new ArrayList<>();
 
 		if (isConnectionError) {
@@ -79,7 +126,7 @@ public class DashboardService {
 			return medicineList;
 		}
 
-		String extractQuery = "SELECT med_id, name FROM medicines ORDER BY added_date LIMIT 4";
+		String extractQuery = "SELECT med_id, name FROM medicines ORDER BY added_date DESC LIMIT 4";
 		try (PreparedStatement stmt = dbConn.prepareStatement(extractQuery)) {
 			ResultSet medicine = stmt.executeQuery();
 
@@ -94,14 +141,14 @@ public class DashboardService {
 		}
 	}
 	
-	public ArrayList<UserModel> GetRecentUsers() {
+	public ArrayList<UserModel> getRecentUsers() {
 		ArrayList<UserModel> usersList = new ArrayList<>();
 		
 		if (isConnectionError) {
 			System.out.println("Connection Error!");
 		}
 		
-		String extractQuery = "SELECT username, first_name, last_name  FROM users ORDER BY registration_date LIMIT 4";
+		String extractQuery = "SELECT username, first_name, last_name  FROM users ORDER BY registration_date DESC LIMIT 4";
 		try(PreparedStatement stmt = dbConn.prepareStatement(extractQuery)){
 			ResultSet user = stmt.executeQuery();
 			
@@ -116,5 +163,82 @@ public class DashboardService {
 			return null;
 		}
 	}
+	
+	public ArrayList<TicketModel> getRecentTickets() {
+		ArrayList<TicketModel> ticketsList = new ArrayList<>();
+		
+		if (isConnectionError) {
+			System.out.println("Connection Error!");
+		}
+		
+		String extractQuery = "SELECT ut.username, t.ticket_Id, t.status "
+				+ "FROM tickets t JOIN user_tickets ut ON t.ticket_id = ut.ticket_id ORDER BY t.created_at LIMIT 4";
+		try(PreparedStatement stmt = dbConn.prepareStatement(extractQuery)){
+			ResultSet ticket = stmt.executeQuery();
+			
+			while(ticket.next()) {
+				ticketsList.add(new TicketModel(ticket.getString("username"), ticket.getInt("ticket_Id"), ticket.getString("status")));
+			}
+			
+			return ticketsList;
+		}
+		catch(SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String getMostViewedMedicine() {
+	    String query = "SELECT m.name, COUNT(um.med_id) AS view_count FROM medicines m JOIN user_meds um ON m.med_id = um.med_id " +
+	                   "GROUP BY m.med_id, m.name ORDER BY view_count DESC LIMIT 1";
+
+	    try (PreparedStatement stmt = dbConn.prepareStatement(query);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getString("name");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+	
+	public String getMostActiveUser() {
+	    String query = "SELECT ut.username, COUNT(DISTINCT ut.ticket_id) AS ticket_count, COUNT(DISTINCT um.med_id) AS view_count, " +
+	                   "(COUNT(DISTINCT ut.ticket_id) + COUNT(DISTINCT um.med_id)) AS total_activity FROM user_tickets ut " +
+	                   "LEFT JOIN user_meds um ON ut.username = um.username GROUP BY ut.username ORDER BY total_activity DESC " +
+	                   "LIMIT 1";
+
+	    try (PreparedStatement stmt = dbConn.prepareStatement(query);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getString("username");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+	
+	public int getTicketCountLastWeek() {
+	    String query = "SELECT COUNT(*) AS total FROM tickets WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+
+	    try (PreparedStatement stmt = dbConn.prepareStatement(query);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getInt("total");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
+	}
+
 }
 

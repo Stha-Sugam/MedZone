@@ -38,8 +38,9 @@ public class UserManagementService {
 			ResultSet user = stmt.executeQuery();
 			
 			while(user.next()) {
-				usersList.add(new UserModel(user.getString("first_Name"), user.getString("last_name"), user.getString("username"), 
-						user.getString("phone_number"), user.getString("email"), user.getDate("registration_date").toLocalDate()));
+				usersList.add(new UserModel( user.getString("username"), user.getString("first_Name"), user.getString("last_name"), 
+						user.getString("phone_number"), user.getString("email"), user.getTimestamp("registration_date").toLocalDateTime(), 
+						user.getString("imageUrl")));
 			}
 			
 			return usersList;

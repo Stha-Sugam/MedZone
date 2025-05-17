@@ -27,7 +27,7 @@ public class MedicineManagementService {
 		return isConnectionError;
 	}
 
-	public ArrayList<MedicineModel> GetMedDetails() {
+	public ArrayList<MedicineModel> getMedDetails() {
 		ArrayList<MedicineModel> medicineList = new ArrayList<>();
 
 		if (isConnectionError) {
@@ -42,7 +42,7 @@ public class MedicineManagementService {
 			while (medicine.next()) {
 				medicineList.add(new MedicineModel(medicine.getString("med_id"), medicine.getString("name"), medicine.getString("brand"),
 						medicine.getString("dosage_form"), medicine.getString("dosage_strength"), medicine.getString("med_usage"),
-						medicine.getDate("added_date").toLocalDate()));
+						medicine.getTimestamp("added_date").toLocalDateTime(), medicine.getString("imageUrl")));
 			}
 
 			return medicineList;
@@ -58,7 +58,7 @@ public class MedicineManagementService {
 			return null;
 		}
 
-		String extractIdQuery = "SELECT med_id, name, brand, dosage_form, dosage_strength, med_usage FROM medicines WHERE med_id = ?";
+		String extractIdQuery = "SELECT med_id, name, brand, dosage_form, dosage_strength, med_usage, imageUrl FROM medicines WHERE med_id = ?";
 		try (PreparedStatement extractStmt = dbConn.prepareStatement(extractIdQuery)) {
 			extractStmt.setString(1, id);
 
@@ -66,7 +66,7 @@ public class MedicineManagementService {
 
 			if (foundMed.next()) {
 				return new MedicineModel(foundMed.getString("med_id"), foundMed.getString("name"), foundMed.getString("brand"),
-				foundMed.getString("dosage_form"), foundMed.getString("dosage_strength"), foundMed.getString("med_usage"));
+				foundMed.getString("dosage_form"), foundMed.getString("dosage_strength"), foundMed.getString("med_usage"), foundMed.getString("imageUrl"));
 			}
 		} catch (SQLException e) {
 			System.err.println("Error during medicine extraction: " + e.getMessage());
@@ -82,8 +82,8 @@ public class MedicineManagementService {
 			return null;
 		}
 
-		String insertQuery = "INSERT INTO medicines (med_id, name, brand, dosage_form, dosage_strength, med_usage, added_date) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String insertQuery = "INSERT INTO medicines (med_id, name, brand, dosage_form, dosage_strength, med_usage, added_date, imageUrl) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 			insertStmt.setString(1, medicine.getId());
@@ -93,6 +93,7 @@ public class MedicineManagementService {
 			insertStmt.setString(5, medicine.getStrength());
 			insertStmt.setString(6, medicine.getUsage());
 			insertStmt.setObject(7, medicine.getAddedDate());
+			insertStmt.setString(8, medicine.getImageUrl());
 
 			return insertStmt.executeUpdate() > 0;
 		} catch (SQLException e) {
@@ -146,7 +147,7 @@ public class MedicineManagementService {
 		}
 	}
 
-	public Boolean CheckRegisteredId(String id) {
+	public Boolean checkRegisteredId(String id) {
 		String checkQuery = "SELECT med_id FROM medicines WHERE med_id = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(checkQuery)) {
 			stmt.setString(1, id);
@@ -157,5 +158,23 @@ public class MedicineManagementService {
 		}
 	}
 	
-	
+	public Boolean addView(String username, String med_id) {
+		if (dbConn == null) {
+			System.err.println("Database connection is not available.");
+			return null;
+		}
+		
+		String insertQuery = "INSERT INTO user_meds (username, med_id) VALUES (?, ?)";
+		try (PreparedStatement stmt = dbConn.prepareStatement(insertQuery)){
+			stmt.setString(1, username);
+			stmt.setString(2, med_id);
+			
+			return stmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			System.err.println("Error during medicine insertion: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		
+		}
+	}
 }

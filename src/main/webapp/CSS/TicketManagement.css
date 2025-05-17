@@ -1,0 +1,144 @@
+@charset "UTF-8";
+
+*{
+	padding: 0px;
+	margin: 0px;
+	box-sizing: box-border;
+	font-family: "Poppins", sans-serif;
+  	font-weight: 500;
+  	font-style: normal;
+  	color: var(--dark);
+}
+
+:root{
+	--primary: #3da9fc;			/*Blue*/
+	--secondary: #e45858; 	/*Red*/
+	--light: #eff0f3; 			/*White*/
+	--secondarylight: #fffffe;	/*White*/
+	--dark: #1b2d45;       		/*DarkBlue*/
+}
+
+body{
+	background-color: var(--light);
+}
+
+main{
+	width: 80%;
+	margin: auto;
+	padding-top: 80px;
+	display: flex;
+	flex-direction: column;
+}
+.success-messages,
+.error-messages {
+    position: fixed;
+    top: 53px;
+    right: -700px;
+    padding: 10px;
+    height: auto;
+    background-color: var(--light);
+    border-radius: 5px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease-in-out;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-messages {
+    border: 3px solid var(--secondary) !important;
+    height: 50px;
+}
+
+.error-messages .error-msg,
+.success-messages .success-msg {
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.success-messages {
+    border: 3px solid var(--primary);
+}
+
+.success-messages .success-msg {
+    color: var(--primary);
+}
+
+.success-messages.active,
+.error-messages.active{
+    right: 10px;
+}
+
+.return-container a {
+    padding: 10px;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    background: var(--light);
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 30px;
+    transition: 0.2s ease-in-out;
+    margin-bottom: 5px;
+}
+
+.return-container a:hover {
+    background: var(--secondary);
+    color: var(--light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 3px solid var(--primary);
+    border-radius: 10px; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--primary);
+    color: var(--light);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+select[name = "status"] {
+    width: 112px;
+    padding: 8px;
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    background-color: var(--light);
+    color: var(--primary);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    outline: none;
+}
+
+select[name = "status"]:hover {
+    background-color: var(--primary);
+    color: var(--light);
+}
+
+select[name = "status"]:focus {
+    box-shadow: 0 0 5px var(--primary);
+}
+
+select[name = "status"] option {
+    background-color: var(--light);
+    color: var(--dark);
+}

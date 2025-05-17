@@ -45,9 +45,9 @@ main{
 
 .main-content{
 	display: flex;
-	width: 100%;
+	width: 90%;
 	margin: auto;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 
 .left-side{
@@ -58,16 +58,16 @@ main{
 }
 
 .left-side > img{
-	width: 90%;
+	width: 100%;
 	height: auto;
 }
 
 .right-side{
 	display: flex;
-	width: 58%;	
+	width: 68%;	
 	flex-direction: column;
 	align-items: left;
-	margin-top: 3%;
+	margin-top: 4%;
 	margin-right: 2%;
 }
 
@@ -93,12 +93,29 @@ main{
 	color: var(--primary);
 	transition: transform 0.3s ease;
 	box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+	font-weight: bold;
 }
 
 .redirect:hover{
 	background-color: var(--primary);
 	color: var(--secondarylight);
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 10px var(--primary);
+	transform: scale(1.03);
+	border: 3px solid var(--light);
+}
+
+.image-contain{
+	width: 91%;
+	margin: auto;
+	margin-top: 15px;
+}
+
+.image-contain img{
+	width: 100%;
+	border-radius: 10px;
+	border: 2px solid var(--primary);
+	box-shadow: 0 0 10px var(--primary);
+	transition: transform 0.3s ease;
 }
 
 .service-container{
@@ -113,7 +130,7 @@ main{
 .cardscontainer{
 	display: flex;
 	height: auto;
-	width: 95%;
+	width: 94%;
 	margin: auto;
 	justify-content: space-around;
 }
@@ -123,17 +140,26 @@ main{
 	width: 90%;
 	margin: auto;
 	border-bottom: 3px solid var(--primary);
+	color: var(--primary);
+	font-weight: bold;
 }
 
 .card{
-	width: 25%;
+	width: 30%;
 	height: auto;
 	border: 2px solid var(--light);
 	border-radius: 20px;
-	box-shadow: 0 0 6px var(--primary);
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 	padding: 25px;
 	display: flex;
 	flex-direction: column;
+	transition: transform 0.3s ease;
+}
+
+.card:hover{
+	transform: scale(1.05);
+	box-shadow: 0 0 15px var(--primary);
+	border: 2px solid var(--primary);
 }
 
 .card .card-img{
@@ -159,7 +185,7 @@ main{
 	}
 	
 	.card{
-		width: 85%;
+		width: 100%;
 		height: auto;
 	}
 }
@@ -180,7 +206,7 @@ main{
 	}
 	
 	.right-side{
-		width: 90%;
+		width: 100%;
 		margin: auto;
 	}
 }

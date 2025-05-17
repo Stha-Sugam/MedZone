@@ -55,13 +55,9 @@
 						</c:otherwise>
 					</c:choose>
 				</ul>
-				<div class = "profile" id = "profile-icon">
-					<c:if test = "${role == 'customer'}">
-						<i class = "fa fa-user" id = "toggle-icon"></i>
-					</c:if>	
-					<c:if test = "${role == 'admin'}">
-						<i class = "fa fa-user-gear" id = "toggle-icon"></i>
-					</c:if>
+				<div class="profile" id="profile-icon">
+					<img id="user-image" src="${pageContext.request.contextPath}/resources/images/user/${userImage}" alt="Profile Image">
+					<i id="toggle-icon" class="fa fa-xmark" style="display: none;"></i>
 				</div>
 				<ul class="log-container">
 					<li class = "log">
@@ -101,29 +97,29 @@
 	</header>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // toggling hamburger
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.getElementById("sidebar");
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      sidebar.classList.toggle("active");
-    });
-
-    // toggling profile icon
-    const profileIconDiv = document.getElementById('profile-icon');
-    const userBar = document.getElementById('user-bar');
-    const icon = document.getElementById('toggle-icon');
-    const originalClass = icon.className;
-
-    profileIconDiv.addEventListener('click', () => {
-      userBar.classList.toggle('active');
-
-      if (userBar.classList.contains('active')) {
-        icon.className = 'fa fa-xmark';
-      } else {
-        icon.className = originalClass;
-      }
-    });
-  });
+	document.addEventListener("DOMContentLoaded", function () {
+		const hamburger = document.getElementById("hamburger");
+		const sidebar = document.getElementById("sidebar");
+		hamburger.addEventListener("click", () => {
+			hamburger.classList.toggle("active");
+			sidebar.classList.toggle("active");
+		});
+		
+		const profileIconDiv = document.getElementById('profile-icon');
+		const userBar = document.getElementById('user-bar');
+		const userImage = document.getElementById('user-image');
+		const toggleIcon = document.getElementById('toggle-icon');
+		
+		profileIconDiv.addEventListener('click', () => {
+			userBar.classList.toggle('active');
+			
+			if (userBar.classList.contains('active')) {
+				userImage.style.display = 'none';
+				toggleIcon.style.display = 'inline';
+			} else {
+				userImage.style.display = 'inline';
+				toggleIcon.style.display = 'none';
+			}
+		});
+	});
 </script>

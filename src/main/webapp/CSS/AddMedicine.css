@@ -180,8 +180,6 @@ button.submit:hover {
     cursor: pointer;
 }
 
-/* Message Boxes */
-
 .error-message,
 .success-messages,
 .error-messages {

@@ -85,7 +85,7 @@ public class UpdatePasswordController extends HttpServlet {
 
 	private String validateOldPassword(HttpServletRequest req, String oldPassword) {
 		if (ValidationUtil.isNullOrEmpty(oldPassword)) {
-			System.out.println("old password null");
+			
 			return "Required";
 		}
 		return null;
@@ -94,7 +94,6 @@ public class UpdatePasswordController extends HttpServlet {
 	private String validatePassword(HttpServletRequest req, String password) {
 		// Validation for password
 		if(ValidationUtil.isNullOrEmpty(password)) {
-			System.out.println("new password null");
 			return "Required.";
 		}
 		else if(!ValidationUtil.validatePassword(password)) {

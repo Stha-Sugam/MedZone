@@ -33,6 +33,9 @@
 				</div>
 			</div>
 			<br>
+			<div class = "image-contain">
+				<img src = "${pageContext.request.contextPath}/resources/images/aboutpagebanner.png">
+			</div>
 			<h2>Our Mission</h2>
 			<h3>At MedZone, our mission is to empower individuals with the knowledge they need to understand their medications 
 			and make informed decisions about their health. We strive to provide clear, concise, and reliable information 

@@ -53,10 +53,10 @@
 					<h1>Enter your <span>Credentials</span> to Continue</h1>
 					
 					<label>Username</label>
-					<c:set var = "userNameError" value = "${requestScope.userName}" />
+					<c:set var = "userNameError" value = "${logUserNameErrors}" />
 					<div id = "userNameInput" class = ${empty userNameError ? 'normal-input' : 'error-input'}>
 						<i class="fa fa-user"></i>
-						<input placeholder = "Enter your username" value = "${param['username']}" type = "text"  id = "username" name = "username"/>
+						<input placeholder = "Enter your username" value = "${logUserName}" type = "text"  id = "username" name = "username"/>
 					</div>
 					<p class = "field-error" id = "userNameErrorMsgs">
 						<c:choose>
@@ -69,7 +69,7 @@
 						</c:choose>
 					</p>
 					<label>Password</label>
-					<c:set var = "passwordError" value = "${requestScope.password}"/>
+					<c:set var = "passwordError" value = "${passwordErrors}"/>
 					<div id = "passwordInput" class = "${empty passwordError? 'normal-input' : 'error-input'}">
 						<i class="fa fa-lock"></i>
 						<input type = "password" id = "password" name = "password" placeholder = "Enter a password">

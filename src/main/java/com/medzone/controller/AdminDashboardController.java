@@ -31,10 +31,16 @@ public class AdminDashboardController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		SessionUtil.setAttribute(request, "userCount",dashboardService.GetUserCount());
-		SessionUtil.setAttribute(request, "medCount", dashboardService.GetMedicineCount());
-		SessionUtil.setAttribute(request, "recentMeds", dashboardService.GetRecentMeds());
-		SessionUtil.setAttribute(request,"recentUsers", dashboardService.GetRecentUsers());
+		SessionUtil.setAttribute(request, "userCount",dashboardService.getUserCount());
+		SessionUtil.setAttribute(request, "medCount", dashboardService.getMedicineCount());
+		SessionUtil.setAttribute(request, "ticketCount", dashboardService.getTicketsCount());
+		SessionUtil.setAttribute(request, "OpenTicketCount", dashboardService.getOpenTicketsCount());
+		SessionUtil.setAttribute(request, "recentMeds", dashboardService.getRecentMeds());
+		SessionUtil.setAttribute(request,"recentUsers", dashboardService.getRecentUsers());
+		SessionUtil.setAttribute(request, "recentTickets", dashboardService.getRecentTickets());
+		SessionUtil.setAttribute(request, "mostViewed", dashboardService.getMostViewedMedicine());
+		SessionUtil.setAttribute(request, "mostActive", dashboardService.getMostActiveUser());
+		SessionUtil.setAttribute(request, "lastSeven", dashboardService.getTicketCountLastWeek());
 		request.getRequestDispatcher("WEB-INF/pages/AdminDashboard.jsp").forward(request, response);
 	}
 

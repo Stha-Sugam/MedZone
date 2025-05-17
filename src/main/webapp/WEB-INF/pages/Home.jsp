@@ -27,7 +27,7 @@
 				<img src = "${pageContext.request.contextPath}/resources/images/homephoto.png">
 			</div>
 			<div class = "right-side">
-				<h1 class = "wlcmsg">Welcome to <span class = "logoname">MEDZONE</span></h1>
+				<h1 class = "wlcmsg">Welcome to <span class = "logoname">MEDZONE</span>, ${username}</h1>
 				<h3 class = "paragraph">Discover reliable and up-to-date information about medicines at your fingertips. 
 				Whether you're looking for dosage details, side effects, or general usage, MedZone makes it easy to find what you need. 
 				Start your search now and make informed health choices with confidence.</h3>
@@ -41,7 +41,11 @@
 				</c:choose>
 			</div>
 		</div>
-		
+		<c:if test = "${role == 'customer'}">
+		<div class = "image-contain">
+			<img src = "${pageContext.request.contextPath}/resources/images/homepagebanner.png">
+		</div>
+		</c:if>
 		<div class = "service-container">
 			<h2 class = "services">Our Services</h2>
 			<div class = "cardscontainer">

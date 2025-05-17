@@ -67,6 +67,7 @@ public class LoginController extends HttpServlet {
 			
 			if (loginStatus != null && loginStatus) {
 				SessionUtil.setAttribute(req, "username", username);
+				SessionUtil.setAttribute(req, "userImage", loginService.extractUserImage(username));
 				if (user.isAdmin()) {
 					CookieUtil.addCookie(resp, "role", "admin", 5 * 40);
 					resp.sendRedirect(req.getContextPath() + "/Admin");
@@ -76,10 +77,13 @@ public class LoginController extends HttpServlet {
 				}
 				return;
 			} else if (loginStatus != null && !loginStatus) {
-				req.setAttribute("password", "Password mismatch. Please try again.");
+				req.setAttribute("passwordErrors", "Password mismatch. Please try again.");
+				req.setAttribute("logUserName", req.getParameter("username"));
+				req.setAttribute("password", req.getParameter("password"));
 				req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
 				return;
 			} else {
+				req.setAttribute("logUserName", req.getParameter("username"));
 				req.setAttribute("errorMessage", "Failed to Login. Please try again later!");
 				req.getRequestDispatcher("/WEB-INF/pages/Login.jsp").forward(req, resp);
 			}
@@ -135,14 +139,18 @@ public class LoginController extends HttpServlet {
 	}
 	
 	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String userNameError, String passwordError) throws ServletException, IOException {
-		req.setAttribute("userName", userNameError);
-		req.setAttribute("password", passwordError);
+		req.setAttribute("logUserName", req.getParameter("username"));
+		
+		req.setAttribute("logUserNameErrors", userNameError);
+		req.setAttribute("passwordErrors", passwordError);
 		req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
 	}
 	
 	private void handleRegisteredError(HttpServletRequest req, HttpServletResponse resp, String usernameError) 
 			throws ServletException, IOException{
-		req.setAttribute("userName", usernameError);
+		req.setAttribute("logUserName", req.getParameter("username"));
+		
+		req.setAttribute("logUserNameErrors", usernameError);
 		req.getRequestDispatcher("WEB-INF/pages/Login.jsp").forward(req, resp);
 	}
 

@@ -21,22 +21,39 @@
 <body>
 	<jsp:include page = "Header.jsp"/>
 	<main>
+		<h1 class = "wel">Admin Dashbaord</h1>
+		<h2 class = "wel down">Welcome, <span>${username}</span></h2>
 		<div class = "stat-container">
 			<div class = "stat-section">
 				<div class = "statistic">
 					<p class = "stat-head">Total Users</p>
-					<h4>USERS COUNT: ${userCount}</h4>
+					<h4>TOTAL USERS: ${userCount}</h4>
 					<a href = "${pageContext.request.contextPath}/ManageUser">Manage Users</a>
 				</div>
 				<div class = "statistic">
 					<p class = "stat-head">Total Medicine</p>
-					<h4>MEDICINES COUNT: ${medCount}</h4>
+					<h4>TOTAL MEDICINES: ${medCount}</h4>
 					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageMed">Manage Medicines</a>
 				</div>
 				<div class = "statistic">
-					<p class = "stat-head">Pending Tickets</p>
-					
-					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageTickets">Manage Tickets</a>
+					<p class = "stat-head">Open Tickets</p>
+					<h4>TOTAL TICKETS: ${ticketCount}</h4>
+					<h4>OPEN TICKETS: ${OpenTicketCount}</h4>
+					<a class = "manageMed" href = "${pageContext.request.contextPath}/ManageTicket">Manage Tickets</a>
+				</div>
+			</div>
+			<div class = "stat-section">
+				<div class = "statistic middle">
+					<p class = "stat-head">Most Active User</p>
+					<h4>Username: ${mostActive}</h4>
+				</div>
+				<div class = "statistic middle">
+					<p class = "stat-head">Most Viewed Medicine</p>
+					<h4>Most Viewed: ${mostViewed}</h4>
+				</div>
+				<div class = "statistic middle">
+					<p class = "stat-head">Tickets Created</p>
+					<h4>Last Week: ${lastSeven}</h4>
 				</div>
 			</div>
 			<div class = "stat-section">
@@ -74,13 +91,15 @@
 					<p class = "stat-head">Recently created Tickets</p>
 					<table>
 						<tr>
+							<th>Username</th>
 							<th>Ticket Id</th>
 							<th>status</th>
 						</tr>
-						<c:forEach var = "recentMed" items = "${recentTickets}">
+						<c:forEach var = "recentsTickets" items = "${recentTickets}">
 							<tr>
-								<td><p class = "stat-data"></p></td>
-								<td><p class = "stat-data"></p></td>
+								<td><p class = "stat-data">${recentsTickets.username}</p></td>
+								<td><p class = "stat-data">${recentsTickets.ticketId}</p></td>
+								<td><p class = "stat-data">${recentsTickets.status}</p></td>
 							</tr>
 						</c:forEach>
 					</table>

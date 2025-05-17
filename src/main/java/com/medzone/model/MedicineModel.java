@@ -1,6 +1,6 @@
 package com.medzone.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MedicineModel {
 	private String id;
@@ -9,12 +9,13 @@ public class MedicineModel {
 	private String form;
 	private String strength;
 	private String usage;
-	private LocalDate addedDate;
+	private LocalDateTime addedDate;
+	private String imageUrl;
 	
 	// empty constructor
 	public MedicineModel() {}
 	
-	public MedicineModel(String id, String name, String brand, String form, String strength, String usage, LocalDate addedDate) {
+	public MedicineModel(String id, String name, String brand, String form, String strength, String usage, LocalDateTime addedDate, String imageUrl) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -23,9 +24,10 @@ public class MedicineModel {
 		this.strength = strength;
 		this.usage = usage;
 		this.addedDate = addedDate;
+		this.imageUrl = imageUrl;
 	}
 
-	public MedicineModel(String name, String brand, String form, String strength, String usage, LocalDate addedDate) {
+	public MedicineModel(String name, String brand, String form, String strength, String usage, LocalDateTime addedDate) {
 		super();
 		this.name = name;
 		this.brand = brand;
@@ -43,6 +45,17 @@ public class MedicineModel {
 		this.form = form;
 		this.strength = strength;
 		this.usage = usage;
+	}
+	
+	public MedicineModel(String id, String name, String brand, String form, String strength, String usage, String imageUrl) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.brand = brand;
+		this.form = form;
+		this.strength = strength;
+		this.usage = usage;
+		this.imageUrl = imageUrl;
 	}
 	
 	public MedicineModel(String id, String name) {
@@ -99,15 +112,19 @@ public class MedicineModel {
 		this.usage = usage;
 	}
 
-	public LocalDate getAddedDate() {
+	public LocalDateTime getAddedDate() {
 		return addedDate;
 	}
 
-	public void setAddedDate(LocalDate addedDate) {
+	public void setAddedDate(LocalDateTime addedDate) {
 		this.addedDate = addedDate;
 	}
-	
-	
 
-	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 }

@@ -26,7 +26,7 @@
 		<h1 class = "base-error"><c:if test = "${not empty errorMessage}">
 			Server Under Maintenance. Please try later!
 		</c:if></h1>
-	</div>
+	</div>	
 	<main>
 		<div class = "Register">
 			<div class = "logo-section">
@@ -36,16 +36,16 @@
 				<div class = "register-text">
 					<h1>SIGN UP FOR <span>MEDZONE</span></h1>
 				</div>
-				<form class = "form" id = "register" action = "Register" method = "post">
+				<form class = "form" id = "register" action = "Register" method = "post" enctype="multipart/form-data">
 					<div class = "double-section">
 						<div class = "inner-section">
 							<label>First Name</label>
-							<c:set var = "firstNameError" value = "${requestScope.firstName}" />
+							<c:set var = "firstNameError" value = "${firstNameErrors}" />
 							<div class = ${empty firstNameError ? 'normal-input' : 'error-input'}>
 								<i class="fa fa-user"></i>
-								<input type = "text" id = "first-name" name = "first-name" value = "${param['first-name']}" placeholder = "Enter your first name">
+								<input type = "text" id = "firstName" name = "firstName" value = "${firstName}" placeholder = "Enter your first name">
 							</div>
-							<p class = "field-error">
+							<h6 class = "field-error">
 								<c:choose>
 									<c:when test = "${not empty firstNameError}">
 										${firstNameError}
@@ -54,14 +54,14 @@
 										&nbsp;
 									</c:otherwise>
 								</c:choose>
-							</p>
+							</h6>
 						</div>
 						<div class = "inner-section">
 							<label>Last Name</label>
-							<c:set var = "lastNameError" value = "${requestScope.lastName}"/>
+							<c:set var = "lastNameError" value = "${lastNameErrors}"/>
 							<div class = "${empty lastNameError? 'normal-input' : 'error-input'}">
 								<i class="fa fa-user"></i>
-								<input type = "text" id = "last-name" name = "last-name" value = "${param['last-name']}" placeholder = "Enter your last name">
+								<input type = "text" id = "lastName" name = "lastName" value = "${lastName}" placeholder = "Enter your last name">
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -78,10 +78,10 @@
 					<div class = "double-section">
 						<div class = "inner-section">
 							<label>Username</label>
-							<c:set var = "userNameError" value = "${requestScope.userName}"/>
+							<c:set var = "userNameError" value = "${userNameErrors}"/>
 							<div class = "${empty userNameError ? 'normal-input' : 'error-input'}">
 								<i class="fa fa-user-circle"></i>
-								<input type = "text" id = "username" name = "username" value = "${param['username']}" placeholder = "Enter an username">
+								<input type = "text" id = "username" name = "username" value = "${regUserName}" placeholder = "Enter an username">
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -96,10 +96,10 @@
 						</div>
 						<div class = "inner-section">
 							<label>Phone Number</label>
-							<c:set var = "phoneNumError" value = "${requestScope.phoneNum}"/>
+							<c:set var = "phoneNumError" value = "${phoneNumErrors}"/>
 							<div class = "${empty phoneNumError ? 'normal-input' : 'error-input'}">
 								<i class="fa fa-phone"></i>
-								<input type = "text" id = "phone-num" name = "phone-num" value = "${param['phone-num']}" placeholder = "Enter your phone number">
+								<input type = "text" id = "phoneNum" name = "phoneNum" value = "${phoneNum}" placeholder = "Enter your phone number">
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -116,10 +116,10 @@
 					<div class = "double-section">
 						<div class = "inner-section">
 							<label>Password</label>
-							<c:set var = "passwordError" value = "${requestScope.password}"/>
+							<c:set var = "passwordError" value = "${passwordErrors}"/>
 							<div class = "${empty passwordError? 'normal-input' : 'error-input'}">
 								<i class="fa fa-lock"></i>
-								<input type = "password" id = "password" name = "password" value = "${param['password']}" placeholder = "Enter a password">
+								<input type = "password" id = "password" name = "password" value = "${password}" placeholder = "Enter a password">
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -134,10 +134,10 @@
 						</div>
 						<div class = "inner-section">
 							<label>Confirm Password</label>
-							<c:set var = "cpassError" value = "${requestScope.cpassword}"/>
+							<c:set var = "cpassError" value = "${cpasswordErrors}"/>
 							<div class = "${empty cpassError? 'normal-input' : 'error-input'}">
 								<i class="fa fa-lock"></i>
-								<input type = "password" id = "cpassword" name = "cpassword" value = "${param['cpassword']}" placeholder = "Confirm your password">
+								<input type = "password" id = "cpassword" name = "cpassword" value = "${cpassword}" placeholder = "Confirm your password">
 							</div>
 							<p class = "field-error">
 								<c:choose>
@@ -154,15 +154,35 @@
 					<div class = "single-section">
 						<div class = "inner-section">
 							<label>Email Address</label>
-							<c:set var = "emailError" value = "${requestScope.email}"/>
+							<c:set var = "emailError" value = "${emailErrors}"/>
 							<div class = "${empty emailError? 'normal-input' : 'error-input'}">
 								<i class="fa fa-envelope"></i>
-								<input type = "email" id = "email" name = "email" value = "${param['email']}" placeholder = "Enter your email">
+								<input type = "email" id = "email" name = "email" value = "${email}" placeholder = "Enter your email">
 							</div>
 							<p class = "field-error">
 								<c:choose>
 									<c:when test = "${not empty emailError}">
 										${emailError}
+									</c:when>
+									<c:otherwise>
+										&nbsp;
+									</c:otherwise>
+								</c:choose>
+							</p>
+						</div>
+					</div>
+					<div class = "single-section">
+						<div class = "inner-section">
+							<label>Upload Profile Picture</label>
+							<c:set var = "imageError" value = "${imageErrors}"/>
+							<div class = "${empty imageError? 'normal-input' : 'error-input'}">
+								<i class="fa fa-upload"></i>
+								<input type = "file" id = "image" name = "image">
+							</div>
+							<p class = "field-error">
+								<c:choose>
+									<c:when test = "${not empty imageError}">
+										${imageError}
 									</c:when>
 									<c:otherwise>
 										&nbsp;

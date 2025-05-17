@@ -1,14 +1,18 @@
 package com.medzone.controller;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+
 import java.io.IOException;
 
 import com.medzone.model.UserModel;
 import com.medzone.service.ProfileService;
+import com.medzone.util.ImageUtil;
 import com.medzone.util.SessionUtil;
 import com.medzone.util.ValidationUtil;
 
@@ -16,10 +20,15 @@ import com.medzone.util.ValidationUtil;
  * Servlet implementation class UpdateProfileController
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/UpdateProfile" })
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+maxFileSize = 1024 * 1024 * 10, // 10MB
+maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UpdateProfileController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	// Creating an object of RegisterService
 	private final ProfileService profileService = new ProfileService();
+	
+	private final ImageUtil imageUtil = new ImageUtil();
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -54,24 +63,42 @@ public class UpdateProfileController extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			UserModel orgUser = (UserModel) SessionUtil.getAttribute(req, "user");
-
-			String newFirstName = req.getParameter("first-name").trim();
-			String newLastName = req.getParameter("last-name").trim();
-			String newPhoneNum = req.getParameter("phone-num").trim();
+			
+			String imageUrl = orgUser.getImageUrl();
+			
+			boolean newImageUpload = false;
+			String newFirstName = req.getParameter("firstName").trim();
+			String newLastName = req.getParameter("lastName").trim();
+			String newPhoneNum = req.getParameter("phoneNum").trim();
 			String newEmail = req.getParameter("email").trim();
+			Part newUserImage = req.getPart("newImage");
 
 			String firstNameError = validateFirstName(req, newFirstName);
 			String lastNameError = validateLastName(req, newLastName);
 			String phoneNumError = validatePhoneNum(req, newPhoneNum);
 			String emailError = validateEmail(req, newEmail);
+			String imageError = null;
+			
+			if (newUserImage != null && newUserImage.getSize() > 0) {
+				imageError = validateImage(newUserImage);
+				if (imageError == null) {
+					imageUrl = imageUtil.getImageNameFromPart(newUserImage);
+					if (!uploadImage(req, newUserImage)) {
+						handleError(req, resp, "Could not upload the new image. Please try again later!");
+						return;
+					}
+					newImageUpload = true;
+				}
+			}
 
 
-			if (firstNameError != null || lastNameError != null || phoneNumError != null || emailError != null) {
-				handleInputError(req, resp, firstNameError, lastNameError, phoneNumError, emailError);
+			if (firstNameError != null || lastNameError != null || phoneNumError != null || emailError != null || imageError != null) {
+				handleInputError(req, resp, firstNameError, lastNameError, phoneNumError, emailError, imageError);
 				return;
 			}
 
-			if(newFirstName.equals(orgUser.getFirstName()) && newLastName.equals(orgUser.getLastName()) && newPhoneNum.equals(orgUser.getPhone()) && newEmail.equals(orgUser.getEmail())) {
+			if(!newImageUpload && newFirstName.equals(orgUser.getFirstName()) && newLastName.equals(orgUser.getLastName()) && 
+					newPhoneNum.equals(orgUser.getPhone()) && newEmail.equals(orgUser.getEmail())) {
 				handleError(req, resp, "No changes detected. Please modify some fields before updating.");
 				return;
 			}
@@ -95,7 +122,7 @@ public class UpdateProfileController extends HttpServlet {
 			String username = (String) SessionUtil.getAttribute(req, "username");
 
 			// Creating a new instance of UserModel
-			UserModel updatedUser = new UserModel(username, newFirstName, newLastName, newPhoneNum, newEmail);
+			UserModel updatedUser = new UserModel(username, newFirstName, newLastName, newPhoneNum, newEmail, imageUrl);
 
 			// updating the user to the database
 			if (profileService.updateUser(updatedUser)) {
@@ -202,14 +229,31 @@ public class UpdateProfileController extends HttpServlet {
 		}
 		return null;
 	}
-
 	
+	private String validateImage(Part imagePart) {
+		if (imagePart != null && imagePart.getSize() > 0 && !ValidationUtil.isValidImageExtension(imagePart)) {
+			return "Invalid image format. Only jpg, jpeg, png, and gif are allowed.";
+		}
+		return null;
+	}
+
+	private boolean uploadImage(HttpServletRequest req, Part image) throws IOException, ServletException {
+		return imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "user");
+	}
+
 	private void handleInputError(HttpServletRequest req, HttpServletResponse resp, String firstNameError, String lastNameError,
-			String phoneNumError, String emailError) throws ServletException, IOException {
-		req.setAttribute("firstName", firstNameError);
-		req.setAttribute("lastName", lastNameError);
-		req.setAttribute("phoneNum", phoneNumError);
-		req.setAttribute("email", emailError);
+			String phoneNumError, String emailError, String imageError) throws ServletException, IOException {
+		req.setAttribute("firstNameErrors", firstNameError);
+		req.setAttribute("lastNameErrors", lastNameError);
+		req.setAttribute("phoneNumErrors", phoneNumError);
+		req.setAttribute("emailErrors", emailError);
+		req.setAttribute("imageErrors", imageError);
+		
+		req.setAttribute("firstName", req.getParameter("firstName"));
+		req.setAttribute("lastName", req.getParameter("lastName"));
+		req.setAttribute("phoneNum", req.getParameter("phoneNum"));
+		req.setAttribute("email", req.getParameter("email"));
+		
 		req.setAttribute("activeSection", "edit-profile");
 		req.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(req, resp);
 	}
@@ -235,6 +279,12 @@ public class UpdateProfileController extends HttpServlet {
 			throws ServletException, IOException{
 		req.setAttribute("phoneNum", phoneNumError);
 		req.setAttribute("email", emailError);
+		
+		req.setAttribute("firstName", req.getParameter("firstName"));
+		req.setAttribute("lastName", req.getParameter("lastName"));
+		req.setAttribute("phoneNum", req.getParameter("phoneNum"));
+		req.setAttribute("email", req.getParameter("email"));
+		
 		req.setAttribute("activeSection", "edit-profile");
 		req.getRequestDispatcher("WEB-INF/pages/ProfileInfo.jsp").forward(req, resp);
 	}

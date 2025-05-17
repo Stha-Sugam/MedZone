@@ -47,13 +47,13 @@ public class ProfileService {
 			return null;
 		}
 
-		String extractQuery = "SELECT first_name, last_name, username, phone_number, email, registration_date FROM users WHERE username = ?";
+		String extractQuery = "SELECT username, first_name, last_name, phone_number, email, registration_date, imageUrl FROM users WHERE username = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(extractQuery)) {
 			stmt.setString(1, user.getUserName());
 			ResultSet foundUser = stmt.executeQuery();
 			if (foundUser.next()) {
-				return new UserModel(foundUser.getString("first_name"), foundUser.getString("last_name"), foundUser.getString("username"), foundUser.getString("phone_number"),
-						foundUser.getString("email"), foundUser.getDate("registration_date").toLocalDate());
+				return new UserModel(foundUser.getString("username"), foundUser.getString("first_name"), foundUser.getString("last_name"), foundUser.getString("phone_number"),
+						foundUser.getString("email"), foundUser.getTimestamp("registration_date").toLocalDateTime(), foundUser.getString("imageUrl"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -69,13 +69,14 @@ public class ProfileService {
 			return null;
 		}
 		
-		String updateQuery = "UPDATE users SET first_name = ?, last_name = ?, phone_number = ?, email = ? WHERE username = ?";
+		String updateQuery = "UPDATE users SET first_name = ?, last_name = ?, phone_number = ?, email = ?, imageUrl = ? WHERE username = ?";
 		try (PreparedStatement stmt = dbConn.prepareStatement(updateQuery)) {
 			stmt.setString(1, user.getFirstName());
 			stmt.setString(2, user.getLastName());
 			stmt.setString(3, user.getPhone());
 			stmt.setString(4, user.getEmail());
-			stmt.setString(5, user.getUserName());
+			stmt.setString(5, user.getImageUrl());
+			stmt.setString(6, user.getUserName());
 			
 			int rowsUpdated = stmt.executeUpdate();
 			

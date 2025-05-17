@@ -23,13 +23,13 @@
 	<jsp:include page = "Header.jsp"/>
 	<main>
 		<h2 class = "head">Add new medicine</h2>
-		<form class = "form" id = "add-med" action = "AddMed" method = "post">
+		<form class = "form" id = "add-med" action = "AddMed" method = "post" enctype="multipart/form-data">
 			<div class = "single-section">
 				<div class = "inner-section">
 					<label>Medicine Id</label>
 					<c:set var = "idError" value = "${requestScope.errorId}" />
 					<div class = ${empty idError ? 'normal-input' : 'error-input'}>
-						<input type = "text" id = "id" name = "id" placeholder = "Enter the medicine's id">
+						<input type = "text" id = "id" name = "id" placeholder = "Enter the medicine's id" value = "${id}">
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -48,7 +48,7 @@
 					<label>Medicine's Name</label>
 					<c:set var = "nameError" value = "${requestScope.errorName}" />
 					<div class = ${empty nameError ? 'normal-input' : 'error-input'}>
-						<input type = "text" id = "name" name = "name" placeholder = "Enter the medicine's name">
+						<input type = "text" id = "name" name = "name" placeholder = "Enter the medicine's name" value = "${name}">
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -67,7 +67,7 @@
 					<label>Brand</label>
 					<c:set var = "brandError" value = "${requestScope.errorBrand}" />
 					<div class = ${empty brandError ? 'normal-input' : 'error-input'}>
-						<input type = "text" id = "brand" name = "brand" placeholder = "Enter the brand of the medicine">
+						<input type = "text" id = "brand" name = "brand" placeholder = "Enter the brand of the medicine" value = "${brand}">
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -86,7 +86,7 @@
 					<label>Dosage Form</label>
 					<c:set var = "formError" value = "${requestScope.errorForm}"/>
 					<div class = "${empty formError? 'normal-input' : 'error-input'}">
-						<input type = "text" id = "form" name = "form" placeholder = "Enter the form of the medicine">
+						<input type = "text" id = "form" name = "form" placeholder = "Enter the form of the medicine" value = "${form}">
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -105,7 +105,7 @@
 					<label>Medicine Strength</label>
 					<c:set var = "strengthError" value = "${requestScope.errorStrength}"/>
 					<div class = "${empty strengthError ? 'normal-input' : 'error-input'}">
-						<input type = "text" id = "strength" name = "strength" placeholder = "Enter the medicine strength(in mg)">
+						<input type = "text" id = "strength" name = "strength" placeholder = "Enter the medicine strength(in mg)" value = "${strength}">
 					</div>
 					<p class = "field-error">
 						<c:choose>
@@ -124,12 +124,31 @@
 					<label>Usage</label>
 					<c:set var = "usageError" value = "${requestScope.errorUsage}"/>
 					<div class = "${empty usageError? 'normal-input' : 'error-input'}">
-						<textarea id = "usage" name = "usage" rows="3" cols="50" placeholder = "Enter the usage of the medicine"></textarea>
+						<textarea id = "usage" name = "usage" rows="3" cols="50" placeholder = "Enter the usage of the medicine">${usage}</textarea>
 					</div>
 					<p class = "field-error">
 						<c:choose>
 							<c:when test = "${not empty usageError}">
 								${usageError}
+							</c:when>
+							<c:otherwise>
+								&nbsp;
+							</c:otherwise>
+						</c:choose>
+					</p>
+				</div>
+			</div>
+			<div class = "single-section">
+				<div class = "inner-section">
+					<label>Medicine Image</label>
+					<c:set var = "imageError" value = "${requestScope.errorImage}"/>
+					<div class = "${empty imageError ? 'normal-input' : 'error-input'}">
+						<input type = "file" id = "image" name = "image" placeholder = "Insert your medicine image.">
+					</div>
+					<p class = "field-error">
+						<c:choose>
+							<c:when test = "${not empty imageError}">
+								${imageError}
 							</c:when>
 							<c:otherwise>
 								&nbsp;

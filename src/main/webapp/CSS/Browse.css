@@ -17,6 +17,10 @@
 	--dark: #1b2d45;       		/*DarkBlue*/
 }
 
+html{
+	scroll-behavior: smooth;
+}
+
 body{
 	background-color: var(--light);
 }
@@ -24,7 +28,7 @@ body{
 main{
 	width: 80%;
 	margin: auto;
-	padding-top: 80px;
+	padding-top: 125px;
 }
 
 .items.database a{
@@ -33,4 +37,335 @@ main{
 	background: var(--primary);
 	box-shadow:0 0 6px rgba(0, 0, 0, 0.6);
 	font-weight: bold;
+}
+
+.error-messages {
+    position: fixed;
+    top: 53px;
+    right: -500px;
+    padding: 10px;
+    height: auto;
+    background-color: var(--light);
+    border-radius: 5px;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease-in-out;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-messages {
+    border: 3px solid var(--secondary) !important;
+    height: 50px;
+}
+
+.error-messages .error-msg{
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.error-messages.active{
+    right: 10px;
+}
+
+.products{
+	width: 100%;
+	margin: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 1.33%;
+}
+
+.products .product{
+	border: 3px solid var(--primary);
+	width: 24%;
+	margin-bottom: 30px;
+	border-radius: 20px;
+	padding: 10px;
+	transition: transform 0.5s ease;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.products .product:hover{
+	transform: scale(1.06);
+	background-color: var(--primary);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.products .product:hover .submit-btn{
+	background-color: var(--primary);
+	border: 3px solid var(--light);
+	color: var(--light);
+}
+
+.search-bar {
+    width: 50%;
+    margin: auto;
+    position: fixed;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+}
+
+.inner-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.normal-input,
+.error-input {
+    border-radius: 20px;
+    padding: 0;
+    background-color: var(--light);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    font-size: 0.9rem;
+    color: var(--dark);
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid none;
+}
+
+.normal-input {
+    border: 2px solid var(--light);
+}
+
+.error-input {
+    border: 2px solid var(--secondary);
+}
+
+.normal-input:focus-within,
+.error-input:focus-within {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.search-form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.search-form span{
+	color: var(--secondary);
+}
+
+.search-form input {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-weight: bold;
+    background: transparent;
+    color: inherit;
+}
+
+.search-form input:focus {
+    color: var(--primary);
+}
+
+.search-form input:focus::placeholder {
+    color: transparent;
+}
+
+.search-form button {
+    padding: 12px;
+    margin: 0;
+    background-color: var(--light);
+    color: var(--primary);
+    border:none;
+    border-left: 2px solid transparent;
+    border-radius: 2px 18.2px 18.2px 2px;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.search-form button i {
+    color: var(--primary) !important;
+    font-weight: bold;
+}
+
+.search-form button:hover {
+    cursor: pointer;
+    background-color: var(--primary);
+}
+
+.search-form button:hover i {
+    color: var(--light) !important;
+}
+
+.search-form:focus-within button {
+	border-left-color: var(--primary);
+}
+
+.success-input::placeholder, .error-input::placeholder {
+    font-size: 10px;
+    transition: 0.3s ease;
+}
+
+.error-input input::placeholder {
+	color: var(--secondary);
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
+
+.product-image{
+	width: 100%;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+}
+
+.product-image img{
+	width: 100%;
+	margin: auto;
+	border-radius: 20px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.product h2, .product h3{
+	text-align: center;
+	color: var(--primary);
+	font-weight: bold;
+}
+
+.product:hover h2, .product:hover h3{
+	color: var(--light);
+}
+
+.product .browse{
+	width: 90%;
+	margin: auto;
+}
+
+.submit-btn{
+	color: var(--primary);
+	background-color: var(--light);
+	border: 3px solid var(--primary);
+	padding: 8px 10px;
+	width: 100%;
+	border-radius: 10px;
+	margin-top: 5px;
+	font-weight: bold;
+	transition: 0.3s ease;
+}
+
+.submit-btn:hover{
+	color: var(--primary) !important;
+	background-color: var(--light) !important;
+	border: 3px solid var(--light) !important;
+	transform: scale(1.04) !important;
+	cursor: pointer;
+}
+
+.product-card {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    border: 4px solid var(--primary);
+    border-radius: 20px;
+    align-items: center;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    display: none;
+}
+
+.product-card .card-image {
+    width: 45%;
+    height: auto;
+}
+
+.card-image img {
+    width: 100%;
+    border: 4px solid var(--light);
+    border-radius: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.product-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    width: 45%;
+    text-align: justify;
+}
+
+.product-content span {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.product-card .return {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.product-card .return a {
+    color: var(--secondary);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.product-card .return i{
+	border: 3px solid var(--secondary);
+	color: var(--secondary);
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	transition: 0.3s ease;
+}
+
+.product-card .return i:hover{
+	background-color: var(--secondary);
+	color: var(--light);
+	transform: scale(1.1);
+}
+
+@media(max-width: 1200px){
+	.products{
+		gap: 2%;
+	}
+	
+	.products .product{
+		width: 32%;
+	}
+}
+
+@media(max-width: 900px){
+	.products{
+		gap: 3.5%;
+	}
+	.products .product{
+		width: 48%;
+	}
+	
+	main{
+		padding-top: 100px;
+	}
+}
+
+@media(max-width: 600px){
+	.products .product{
+		width: 80%;
+		margin: 20px auto;
+	}
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,42 +22,104 @@
 <body>
 	<jsp:include page = "Header.jsp"/>
 	<main>
-		<h1 class = "heading">GET IN TOUCH WITH US</h1>
-		<h3>Want to get in touch with us? We'd love to hear from you. Here's how you can reach us.</h3>
-		<h4 class = "paragraph">At MedZone, we are dedicated to providing you with accurate and reliable medicine information.
-		If you have any questions, feedback, or require assistance, please don't hesitate to reach out to our administrator.
-		We value your input and will do our best to respond to your inquiries promptly.</h4>
-		<br>
-		<div class = "contact-num">
-			<h2>Contact our Admin</h2>
-			<h4>Email Address: administrator@medzone.com</h4>
-			<h4>Landline: 01-4567653</h4>
-			<h4>Contact Info: +977 9874567364</h4>
+		<div class = "success-messages" id = "success-messages">
+			<h1 class = "success-msg">
+			<c:if test = "${not empty successMessage}">
+				${successMessage}
+			</c:if>
+			<c:remove var="successMessage" scope="session"/>
+			</h1>
 		</div>
-		<br>
-		<h2 class = "response">What you Get when asking your Question</h2>
-		<ol>
-			<li><h4>1. Less than 24-hour response to your question.</h4></li>
-			<li><h4>2. Throughness and expertise of a Certified Exchange Specialist.</h4></li>
-			<li><h4>3. Plan of action summarized in an email follow up.</h4></li>
-		</ol>
-		<div class = "contact-us">
-			<h2 class = "form-heading">CONTACT US</h2>
-			<form id = "contact" action = "Contact" method = "post">
-				<div class = "subject">
-					<label class = "">Subject</label>
-					<input class = "" type = "text" name = "subject" id = "subject" placeholder = "Enter your subject of contact">
+		<div class = "error-messages" id = "error-messages">
+			<h1 class = "error-msg">
+			<c:if test = "${not empty errorMessage}">
+				${errorMessage}
+			</c:if>
+			<c:remove var = "errorMessage" scope = "session"/>
+			</h1>
+		</div>
+		<div class = "image-contain">
+			<img src = "${pageContext.request.contextPath}/resources/images/contactpagebanner.png">
+		</div>
+		<div class = "container-content">
+			<div class = "admin-contact">
+				<div class = "contact-num">
+					<h2>Contact our Admin</h2>
+					<h4>Email Address: administrator@medzone.com</h4>
+					<h4>Landline: 01-4567653</h4>
+					<h4>Contact Info: +977 9874567364</h4>
 				</div>
-				<div class = "message">
-					<label class = "">Message</label>
-					<textarea id="message" name="message" rows="8" cols="50" placeholder="Type your message here..."></textarea>
+				<br>
+				<div class = "reponse-get">
+					<h2 class = "response">What you Get when asking your Question</h2>
+					<ol>
+						<li><h4>1. Less than 24-hour response to your question.</h4></li>
+						<li><h4>2. Throughness and expertise of a Certified Exchange Specialist.</h4></li>
+						<li><h4>3. Plan of action summarized in an email follow up.</h4></li>
+					</ol>
+				</div>
+			</div>
+			<form id = "contact" action = "Contact" method = "post" class = "form">
+				<h2 class = "form-heading">CREATE A TICKET</h2>
+				<div class = "single-section">
+					<div class = "inner-section">
+						<label>Subject</label>
+						<c:set var = "subjectError" value = "${requestScope.errorSubject}"/>
+						<div class = "${empty subjectError ? 'normal-input' : 'error-input'}">
+							<input type = "text" id = "subject" name = "subject" value="${subjectValue}" placeholder = "Enter the subject of the ticket">
+						</div>
+						<p class = "field-error">
+							<c:choose>
+								<c:when test = "${not empty subjectError}">
+									${subjectError}
+								</c:when>
+								<c:otherwise>
+									&nbsp;
+								</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
+				</div>
+				<div class = "single-section">
+					<div class = "inner-section">
+						<label>Message</label>
+						<c:set var = "messageError" value = "${requestScope.messageError}"/>
+						<div class = "${empty messageError? 'normal-input' : 'error-input'}">
+							<textarea id = "message" name = "message" rows="3" cols="50" placeholder = "Type your message here....">${messageValue}</textarea>
+						</div>
+						<p class = "field-error">
+							<c:choose>
+								<c:when test = "${not empty messageError}">
+									${messageError}
+								</c:when>
+								<c:otherwise>
+									&nbsp;
+								</c:otherwise>
+							</c:choose>
+						</p>
+					</div>
 				</div>
 				<div class = "actions">
-					<button type = "submit">Submit</button>
+					<button class = "submit" type = "submit">Submit</button>
 				</div>
 			</form>
 		</div>
 	</main>
 	<jsp:include page = "Footer.jsp"/>
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+		    const success = document.getElementById("success-messages");
+		    if (success && success.innerText.trim().length > 0) {
+		        success.classList.add("active");
+		        setTimeout(() => success.classList.remove("active"), 5000);
+		    }
+	
+		    const error = document.getElementById("error-messages");
+		    if (error && error.innerText.trim().length > 0) {
+		        error.classList.add("active");
+		        setTimeout(() => error.classList.remove("active"), 5000);
+		    }
+		});
+	</script>
 </body>
 </html>

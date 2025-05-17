@@ -1,5 +1,7 @@
 package com.medzone.util;
 
+import jakarta.servlet.http.Part;
+
 public class ValidationUtil {
 	
 	private static final String NAME_REGEX = "^[a-zA-Z]+[ a-zA-Z]*$";
@@ -38,9 +40,17 @@ public class ValidationUtil {
 		return value.matches(EMAIL_REGEX);
 	}
 	
+	// Validation for matching passwords while registering and changing passwords.
 	public static boolean matchPasswords(String pass, String cpass) {
 		return pass.equals(cpass);
 	}
 	
-	
+	// Validate if a Part's file extension matches with image extensions (jpg, jpeg, png, gif)
+    public static boolean isValidImageExtension(Part imagePart) {
+        if (imagePart == null || isNullOrEmpty(imagePart.getSubmittedFileName())) {
+            return false;
+        }
+        String fileName = imagePart.getSubmittedFileName().toLowerCase();
+        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".gif");
+    }
 }

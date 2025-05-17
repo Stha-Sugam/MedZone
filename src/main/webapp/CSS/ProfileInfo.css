@@ -343,6 +343,7 @@ button.submit:hover {
 }
 
 .info-section {
+	width: 100%;
     border-top: 4px solid var(--primary);
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -358,6 +359,19 @@ button.submit:hover {
 .info-inner h4 {
     color: var(--primary);
     font-weight: bold;
+}
+
+.profile-image{
+	width: 200px;
+	height: 200px;
+	margin: auto;
+}
+
+.profile-image img{
+	width: 200px;
+	height: 200px;
+	border-radius: 150px;
+	border: 2px solid var(--primary);
 }
 
 .info-inner {

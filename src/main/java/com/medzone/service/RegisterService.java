@@ -43,20 +43,21 @@ public class RegisterService {
 		}
 		
 		// SQL insert query to add a new user to the users table in database.
-		String insertQuery = "INSERT INTO users (first_name, last_name, username, phone_number, password, email, registration_date, is_admin)"
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String insertQuery = "INSERT INTO users (username, first_name, last_name, phone_number, password, email, registration_date, is_admin, imageUrl)"
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		// Preparing the SQL statement using the dbConn database connection
 		try (PreparedStatement insertStmt = dbConn.prepareStatement(insertQuery)) {
 			// Setting values for each of the placeholder in the query using UserModel getters.
-			insertStmt.setString(1, user.getFirstName());
-			insertStmt.setString(2, user.getLastName());
-			insertStmt.setString(3, user.getUserName());
+			insertStmt.setString(1, user.getUserName());
+			insertStmt.setString(2, user.getFirstName());
+			insertStmt.setString(3, user.getLastName());
 			insertStmt.setString(4, user.getPhone());
 			insertStmt.setString(5, user.getPassword());
 			insertStmt.setString(6, user.getEmail());
 			insertStmt.setObject(7, user.getRegistrationDate());
 			insertStmt.setBoolean(8, user.isAdmin());
+			insertStmt.setString(9, user.getImageUrl());
 			
 			// executes the insert query and throws true if row is inserted.
 			return insertStmt.executeUpdate() > 0;

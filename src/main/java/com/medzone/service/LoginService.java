@@ -77,6 +77,22 @@ public class LoginService {
 			return null;
 		}
 	}
+	
+	public String extractUserImage(String username) {
+		String extractQuery = "SELECT imageUrl FROM users WHERE username = ?";
+		try(PreparedStatement stmt = dbConn.prepareStatement(extractQuery)) {
+			stmt.setString(1, username);
+			ResultSet foundImage = stmt.executeQuery();
+			if(foundImage.next()) {
+				return foundImage.getString("imageUrl");
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
 
 	/**
 	 * Validates the password retrieved from the database.
