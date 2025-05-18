@@ -280,6 +280,7 @@ input:focus::placeholder {
     padding: 20px;
     position: relative;
     display: none;
+    margin-top: -55px;
 }
 
 .product-card .card-image {

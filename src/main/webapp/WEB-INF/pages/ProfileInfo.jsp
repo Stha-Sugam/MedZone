@@ -79,7 +79,7 @@
 							</div>
 							<div class="info-inner">
 								<h4>FULL NAME</h4>
-								<p>${user.firstName}${user.lastName}</p>
+								<p>${user.firstName} ${user.lastName}</p>
 							</div>
 						</div>
 						<div class="info-section">

@@ -63,8 +63,8 @@ public class LoginService {
 	
 	/**
 	 * 
-	 * @param username
-	 * @return
+	 * @param username username to be checked
+	 * @return true if found
 	 */
 	public Boolean checkUsername(String username) {
 		String checkQuery = "SELECT username FROM users WHERE username = ?";

@@ -30,7 +30,7 @@ public class AdminDashboardController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// sets all the data required for Statistics in Admin Dashboard.
 		SessionUtil.setAttribute(request, "userCount",dashboardService.getUserCount());
 		SessionUtil.setAttribute(request, "medCount", dashboardService.getMedicineCount());
 		SessionUtil.setAttribute(request, "ticketCount", dashboardService.getTicketsCount());

@@ -254,6 +254,12 @@ th {
 	display: block;
 }
 
+.form-container h2{
+	color: var(--primary);
+	width: 50%;
+	margin: auto;
+}
+
 .hidden {
 	display: none !important;
 }

@@ -34,6 +34,7 @@ public class ProfileService {
 			return false;
 		}
 	}
+	
 	/**
 	 * Validates the user credentials against the database records.
 	 *
@@ -52,8 +53,10 @@ public class ProfileService {
 			stmt.setString(1, user.getUserName());
 			ResultSet foundUser = stmt.executeQuery();
 			if (foundUser.next()) {
-				return new UserModel(foundUser.getString("username"), foundUser.getString("first_name"), foundUser.getString("last_name"), foundUser.getString("phone_number"),
-						foundUser.getString("email"), foundUser.getTimestamp("registration_date").toLocalDateTime(), foundUser.getString("imageUrl"));
+				return new UserModel(foundUser.getString("username"), foundUser.getString("first_name"), 
+						foundUser.getString("last_name"), foundUser.getString("phone_number"),
+						foundUser.getString("email"), foundUser.getTimestamp("registration_date").toLocalDateTime(), 
+						foundUser.getString("imageUrl"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

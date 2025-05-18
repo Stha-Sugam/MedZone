@@ -53,7 +53,7 @@
 				</div>
 				<div class = "statistic middle">
 					<p class = "stat-head">Tickets Created</p>
-					<h4>Last Week: ${lastSeven}</h4>
+					<h4>Last 7 Days: ${lastSeven} Tickets</h4>
 				</div>
 			</div>
 			<div class = "stat-section">

@@ -3,6 +3,7 @@ package com.medzone.model;
 import java.time.LocalDateTime;
 
 public class MedicineModel {
+	// attributes for the medicine model
 	private String id;
 	private String name;
 	private String brand;
@@ -15,6 +16,7 @@ public class MedicineModel {
 	// empty constructor
 	public MedicineModel() {}
 	
+	// constructors with different parameters
 	public MedicineModel(String id, String name, String brand, String form, String strength, String usage, LocalDateTime addedDate, String imageUrl) {
 		super();
 		this.id = id;
@@ -64,6 +66,7 @@ public class MedicineModel {
 		this.name = name;
 	}
 
+	// getter and settor methods.
 	public String getId() {
 		return id;
 	}
